@@ -21,7 +21,7 @@
     "total" : 159,
     "parameter" : [{
       "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/900000000000207008/version/20250814"
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
     }],
     "contains" : [{
       "system" : "http://snomed.info/sct",
@@ -31,17 +31,17 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "10759111000119102",
-      "display" : "Viral hepatitis in childbirth"
+      "display" : "Viral hepatitis in mother complicating childbirth"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "10759151000119101",
-      "display" : "Viral hepatitis in pregnancy"
+      "display" : "Viral hepatitis in mother complicating pregnancy"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1087101000119109",
-      "display" : "Herpes simplex hepatitis"
+      "display" : "Hepatitis caused by human herpes simplex virus"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -76,12 +76,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1163464002",
-      "display" : "Infection of liver caused by Schistosoma japonicum"
+      "display" : "Hepatosplenic schistosomiasis caused by Schistosoma japonicum"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1197150002",
-      "display" : "Recurrent hepatitis C virus induced liver disease in liver transplant recipient"
+      "display" : "Recurrent hepatitis C virus induced liver disease following liver transplant"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -96,7 +96,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1222580004",
-      "display" : "Hepatitis caused by toxoplasmosis"
+      "display" : "Hepatitis caused by Toxoplasma gondii"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -106,12 +106,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1230342001",
-      "display" : "Hepatitis B reinfection following transplantation of liver"
+      "display" : "Hepatitis B reinfection following liver transplantation"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1234778004",
-      "display" : "Steatohepatitis caused by ethanol"
+      "display" : "Alcoholic steatohepatitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -126,12 +126,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "128241005",
-      "display" : "Inflammatory disorder of liver"
+      "display" : "Inflammatory disease of liver"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "128302006",
-      "display" : "Chronic type C viral hepatitis"
+      "display" : "Chronic hepatitis C"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -226,7 +226,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "197344005",
-      "display" : "Hepatitis with adenovirus"
+      "display" : "Hepatitis caused by adenovirus"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -371,7 +371,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "302919001",
-      "display" : "EBV - Epstein-Barr virus hepatitis"
+      "display" : "Epstein-Barr virus hepatitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -381,7 +381,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "31712002",
-      "display" : "Primary biliary cirrhosis"
+      "display" : "Primary biliary cholangitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -506,7 +506,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "442685003",
-      "display" : "NASH - Nonalcoholic steatohepatitis"
+      "display" : "Metabolic dysfunction-associated steatohepatitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -611,7 +611,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "707341005",
-      "display" : "Viral hepatitis type D"
+      "display" : "Viral hepatitis D"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -621,7 +621,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "7111000119109",
-      "display" : "Hepatitis E virus infection"
+      "display" : "Viral hepatitis E"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -636,7 +636,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "715401008",
-      "display" : "Primary biliary cirrhosis co-occurrent with systemic scleroderma"
+      "display" : "Reynolds syndrome"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -741,7 +741,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "773113008",
-      "display" : "Acute hepatitis caused by infection"
+      "display" : "Acute infectious hepatitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -771,7 +771,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "838380002",
-      "display" : "Chronic hepatitis B with hepatitis C and hepatitis D"
+      "display" : "Chronic hepatitis B co-occurrent with hepatitis C and hepatitis D"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -781,12 +781,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "860856002",
-      "display" : "Schistosoma haematobium hepatosplenic schistosomiasis"
+      "display" : "Hepatosplenic schistosomiasis caused by Schistosoma haematobium"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "860861000",
-      "display" : "Hepatosplenic schistosomiasis caused by Schistosoma mansoni"
+      "display" : "Infection of liver and spleen caused by Schistosoma mansoni"
     },
     {
       "system" : "http://snomed.info/sct",

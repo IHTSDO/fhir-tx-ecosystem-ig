@@ -13,7 +13,7 @@
   "compose": {
     "include": [{
       "system": "http://snomed.info/sct",
-      "version" : "http://snomed.info/xsct/900000000000207008/version/20250814",
+      "version" : "http://snomed.info/xsct/31000003106/version/20250909",
       "filter": [
         {"property": "concept", "op": "is-a", "value": "128241005"},
         {"property": "expressions", "op": "=", "value": "false"}

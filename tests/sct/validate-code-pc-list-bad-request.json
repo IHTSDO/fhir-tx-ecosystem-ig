@@ -10,6 +10,10 @@
       "valueCode" : "128241005:{363698007=181268008}"
     },
     {
+      "name" : "system-version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    {
       "name" : "url",
       "valueUri" : "http://hl7.org/fhir/test/ValueSet/sct-pc-list-no-pc"
     }

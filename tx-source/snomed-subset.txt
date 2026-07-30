@@ -1,4 +1,12 @@
 900000000000526001 |REPLACED BY association reference set (foundation metadata concept)|
+# Refsets required for Postcoordination tests
+723561005 |MRCM attribute domain international reference set|
+723562003 |MRCM attribute range international reference set|
+723596005 |All SNOMED CT content|
+723595009 |All postcoordinated SNOMED CT content|
+723597001 |Mandatory concept model rule|
+723598006 |Optional concept model rule|
+# Normal concepts
 1539003 |Acquired trigger finger (disorder)|
 1204474000 |Product containing precisely barium sulfate 600 milligram/1 milliliter conventional release oral suspension (clinical drug)|
 86299006 |Tetralogy of Fallot (disorder)|

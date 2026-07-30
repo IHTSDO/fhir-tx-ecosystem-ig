@@ -52,12 +52,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1119217009",
-      "display" : "Pain in right lumbar region of abdomen"
+      "display" : "Pain in right abdominal lumbar region"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1119218004",
-      "display" : "Pain in left lumbar region of abdomen"
+      "display" : "Pain in left abdominal lumbar region"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -72,12 +72,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1179692005",
-      "display" : "Prostatitis category 3a"
+      "display" : "Prostatitis category IIIa"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1179694006",
-      "display" : "Prostatitis category 3b"
+      "display" : "Prostatitis category IIIb"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -87,7 +87,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1197659000",
-      "display" : "Epigastric pain syndrome"
+      "display" : "Chronic primary epigastric pain syndrome"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -112,7 +112,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1295258000",
-      "display" : "Postoperative pain of intrathecal infusion pump pocket following implantation of intrathecal infusion pump"
+      "display" : "Pain of intrathecal infusion pump pocket following implantation of intrathecal infusion pump"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -127,7 +127,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "15803009",
-      "display" : "Bladder pain"
+      "display" : "Urinary bladder pain"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -162,7 +162,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "162052001",
-      "display" : "Pain in left iliac fossa"
+      "display" : "Left iliac fossa pain"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -177,7 +177,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "16844001",
-      "display" : "Stranguria"
+      "display" : "Painful urging to urinate"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -187,7 +187,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "191977008",
-      "display" : "Psychogenic dysmenorrhoea"
+      "display" : "Psychogenic dysmenorrhea"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -252,7 +252,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "266599000",
-      "display" : "Period pain"
+      "display" : "Dysmenorrhea"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -307,7 +307,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "286993001",
-      "display" : "Dysmenorrhoea - non-psychogenic"
+      "display" : "Dysmenorrhea - non-psychogenic"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -407,7 +407,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "36729000",
-      "display" : "Prostatic pain"
+      "display" : "Pain of prostate"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -417,7 +417,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "371102005",
-      "display" : "Generalised colicky abdominal pain"
+      "display" : "Generalized colicky abdominal pain"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -437,17 +437,17 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "38791000087103",
-      "display" : "Chronic pelvic pain syndrome"
+      "display" : "Chronic primary pelvic pain syndrome"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "39691000087103",
-      "display" : "Chronic secondary visceral pain in abdominal region"
+      "display" : "Chronic visceral pain in abdominal region due to disorder"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "39701000087103",
-      "display" : "Chronic secondary visceral pain in pelvic region"
+      "display" : "Chronic visceral pain in pelvic region due to disorder"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -512,7 +512,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "62647006",
-      "display" : "Proctalgia fugax"
+      "display" : "Painful spasm of anus"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -522,7 +522,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "6744007",
-      "display" : "Painful bladder spasm"
+      "display" : "Painful urinary bladder spasm"
     },
     {
       "system" : "http://snomed.info/sct",

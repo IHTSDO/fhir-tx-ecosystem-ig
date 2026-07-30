@@ -1,24 +1,37 @@
 {
   "$optional-properties$" : ["id", "date", "publisher", "description", "copyright", "compose", "name", "url", "status", "experimental"],
   "resourceType" : "ValueSet",
+  "url" : "http://snomed.info/sct?fhir_vs",
+  "name" : "ALLSNOMEDCT",
+  "title" : "SNOMED CT Reference Set (All of SNOMED CT)",
+  "status" : "active",
+  "date" : "$instant$",
   "id" : "$id$",
   "expansion" : {
     "$optional-properties$" : ["id", "offset"],
     "extension" : [{
       "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
       "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason",
+      "valueString" : "The code System 'http://snomed.info/sct' has a grammar and so has infinite members"
     }],
     "id" : "$id$",
     "identifier" : "$uuid$",
     "timestamp" : "$instant$",
-    "total" : 2206,
+    "total" : 2238,
     "parameter" : [{
       "name" : "count",
       "valueInteger" : 0
     },
     {
+      "name" : "system-version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    {
       "name" : "used-codesystem",
-      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/900000000000207008/version/20250814"
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
     }]
   }
 }

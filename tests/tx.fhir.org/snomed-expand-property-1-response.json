@@ -87,7 +87,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "10742121000119104",
-      "display" : "Asthma in childbirth"
+      "display" : "Asthma in mother complicating childbirth"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -117,7 +117,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1751000119100",
-      "display" : "Acute exacerbation of chronic obstructive airways disease with asthma"
+      "display" : "Acute exacerbation of chronic obstructive pulmonary disease with asthma"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -132,7 +132,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "195967001",
-      "display" : "Airway hyperreactivity"
+      "display" : "Asthma"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -192,7 +192,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "281239006",
-      "display" : "Exacerbation of asthma"
+      "display" : "Acute asthma"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -327,7 +327,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "56968009",
-      "display" : "Wood asthma"
+      "display" : "Asthma caused by wood dust"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -342,17 +342,17 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "63088003",
-      "display" : "Extrinsic asthma without status asthmaticus"
+      "display" : "Allergic asthma without status asthmaticus"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "703953004",
-      "display" : "Dermatophagoides pteronyssinus allergic asthma"
+      "display" : "Allergic asthma caused by Dermatophagoides pteronyssinus"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "703954005",
-      "display" : "Dermatophagoides farinae allergic asthma"
+      "display" : "Allergic asthma caused by Dermatophagoides farinae"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -412,7 +412,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "708093000",
-      "display" : "Acute exacerbation of extrinsic asthma"
+      "display" : "Acute exacerbation of allergic asthma"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -422,7 +422,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "708095007",
-      "display" : "Acute severe exacerbation of extrinsic asthma"
+      "display" : "Acute severe exacerbation of immunoglobin E-mediated allergic asthma"
     },
     {
       "system" : "http://snomed.info/sct",

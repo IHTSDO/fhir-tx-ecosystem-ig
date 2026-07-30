@@ -1,0 +1,28 @@
+{
+  "$optional-properties$" : ["id", "date", "publisher", "compose"],
+  "resourceType" : "ValueSet",
+  "id" : "$id$",
+  "expansion" : {
+    "$optional-properties$" : ["id","offset"],
+    "id" : "$id$",
+    "identifier" : "$uuid$",
+    "timestamp" : "$instant$",
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed",
+      "valueBoolean" : true
+    },
+    {
+      "url" : "http://hl7.org/fhir/StructureDefinition/valueset-unclosed-reason",
+      "valueString" : "The code System 'http://www.ama-assn.org/go/cpt' has a grammar and so has infinite members"
+    }],
+    "total" : 11064,
+    "parameter" : [{
+      "name" : "count",
+      "valueInteger" : 0
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://www.ama-assn.org/go/cpt|2023"
+    }]
+  }
+}

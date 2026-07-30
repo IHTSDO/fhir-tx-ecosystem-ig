@@ -49,6 +49,11 @@
     "valueBoolean" : false
   },
   {
+    "name" : "version",
+    "valueString" : "1.0.0",
+    "$optional$" : "warning:version"
+  },
+  {
     "name" : "x-caused-by-unknown-system",
     "valueCanonical" : "http://hl7.org/fhir/test/CodeSystem/version|1"
   }]

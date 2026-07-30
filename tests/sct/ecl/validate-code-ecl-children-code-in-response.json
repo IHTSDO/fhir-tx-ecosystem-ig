@@ -1,0 +1,25 @@
+{
+  "resourceType": "Parameters",
+  "parameter": [
+    {
+      "name": "code",
+      "valueCode": "119216005"
+    },
+    {
+      "name": "display",
+      "valueString": "Liver part"
+    },
+    {
+      "name": "result",
+      "valueBoolean": true
+    },
+    {
+      "name": "system",
+      "valueUri": "http://snomed.info/sct"
+    },
+    {
+      "name": "version",
+      "valueString": "http://snomed.info/xsct/31000003106/version/20250909"
+    }
+  ]
+}

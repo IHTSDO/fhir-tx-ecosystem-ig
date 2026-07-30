@@ -1,0 +1,49 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "code",
+    "valueCode" : "28012007"
+  },
+  {
+    "name" : "display",
+    "valueString" : "Closed fracture of shaft of tibia"
+  },
+  {
+    "name" : "issues",
+    "resource" : {
+      "resourceType" : "OperationOutcome",
+      "issue" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+          "valueString" : "None_of_the_provided_codes_are_in_the_value_set_one"
+        }],
+        "severity" : "error",
+        "code" : "code-invalid",
+        "details" : {
+          "coding" : [{
+            "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+            "code" : "not-in-vs"
+          }],
+          "text" : "The provided code 'http://snomed.info/sct#28012007 ('Closed fracture of shaft of tibia')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/sct-ecl-refinement-cardinality-grouped|5.0.0'"
+        },
+        "expression" : ["code"]
+      }]
+    }
+  },
+  {
+    "name" : "message",
+    "valueString" : "The provided code 'http://snomed.info/sct#28012007 ('Closed fracture of shaft of tibia')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/sct-ecl-refinement-cardinality-grouped|5.0.0'"
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : false
+  },
+  {
+    "name" : "system",
+    "valueUri" : "http://snomed.info/sct"
+  },
+  {
+    "name" : "version",
+    "valueString" : "http://snomed.info/xsct/31000003106/version/20250909"
+  }]
+}

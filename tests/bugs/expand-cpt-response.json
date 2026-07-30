@@ -1,10 +1,14 @@
 {
   "resourceType" : "OperationOutcome",
   "issue" : [{
+    "extension" : [{
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "VALUESET_TOO_COSTLY"
+    }],
     "severity" : "error",
     "code" : "too-costly",
     "details" : {
-      "text" : "The code System \"http://www.ama-assn.org/go/cpt\" has a grammar, and cannot be enumerated directly"
+      "text" : "The value set 'undefined' expansion has too many codes to produce (>3000)"
     }
   }]
 }

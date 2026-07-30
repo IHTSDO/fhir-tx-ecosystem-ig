@@ -1,0 +1,17 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "valueSet",
+    "resource" : {
+      "resourceType" : "ValueSet",
+      "url" : "http://hl7.org/fhir/test/ValueSet/hgvs-all",
+      "version" : "5.0.0",
+      "status" : "active",
+      "compose" : {
+        "include" : [{
+          "system" : "http://varnomen.hgvs.org"
+        }]
+      }
+    }
+  }]
+}

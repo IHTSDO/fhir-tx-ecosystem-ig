@@ -26,7 +26,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "10754031000119105",
-      "display" : "Gonorrhoea in mother complicating childbirth"
+      "display" : "Gonorrhea in mother complicating childbirth"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -61,7 +61,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1092601000119103",
-      "display" : "Severe sepsis with acute organ dysfunction caused by Gonococcus"
+      "display" : "Sepsis caused by Gonococcus"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -111,12 +111,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "1258923000",
-      "display" : "Postpartum gonorrhea"
+      "display" : "Infection caused by Neisseria gonorrhoeae during puerperium"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "1339030007",
-      "display" : "Inflammation of rectum caused by Neisseria gonorrhoeae"
+      "display" : "Neisseria gonorrhoeae proctitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -131,12 +131,12 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "15693321000119100",
-      "display" : "Keratitis of left eye caused by Neisseria gonorrhoeae"
+      "display" : "Left gonococcal keratitis"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "15693361000119105",
-      "display" : "Gonococcal keratitis of bilateral eyes"
+      "display" : "Bilateral gonococcal keratitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -146,17 +146,17 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "15988791000119105",
-      "display" : "Gonococcal conjunctivitis neonatorum of right eye"
+      "display" : "Neonatal conjunctivitis of right eye caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "15988831000119104",
-      "display" : "Gonococcal conjunctivitis neonatorum of left eye"
+      "display" : "Neonatal conjunctivitis of left eye caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
       "code" : "15988871000119101",
-      "display" : "Gonococcal conjunctivitis neonatorum of bilateral eyes"
+      "display" : "Neonatal conjunctivitis of bilateral eyes caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -202,7 +202,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186909005",
-      "display" : "Acute gonorrhoea of lower genitourinary tract NOS",
+      "display" : "Acute gonorrhea of lower genitourinary tract NOS",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -212,7 +212,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186910000",
-      "display" : "Acute gonorrhoea of upper genitourinary tract",
+      "display" : "Acute gonorrhea of upper genitourinary tract",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -222,7 +222,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186911001",
-      "display" : "Acute unspecified gonorrhoea of upper genitourinary tract",
+      "display" : "Acute unspecified gonorrhea of upper genitourinary tract",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -241,13 +241,13 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "186915005",
-      "display" : "Chronic gonorrhoea lower genitourinary tract"
+      "display" : "Chronic gonorrhea lower genitourinary tract"
     },
     {
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186916006",
-      "display" : "Chronic gonorrhoea of lower genitourinary tract NOS",
+      "display" : "Chronic gonorrhea of lower genitourinary tract NOS",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -257,7 +257,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186917002",
-      "display" : "Chronic gonorrhoea of upper genitourinary tract",
+      "display" : "Chronic gonorrhea of upper genitourinary tract",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -267,7 +267,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "186918007",
-      "display" : "Chronic unspecified gonorrhoea of upper genitourinary tract",
+      "display" : "Chronic unspecified gonorrhea of upper genitourinary tract",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -386,7 +386,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "199161008",
-      "display" : "Maternal gonorrhoea during pregnancy, childbirth and the puerperium"
+      "display" : "Maternal gonorrhea during pregnancy, childbirth and the puerperium"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -402,7 +402,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "199163006",
-      "display" : "Maternal gonorrhoea during pregnancy - baby delivered",
+      "display" : "Maternal gonorrhea during pregnancy - baby delivered",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -422,7 +422,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "199165004",
-      "display" : "Maternal gonorrhoea during pregnancy - baby not yet delivered",
+      "display" : "Maternal gonorrhea during pregnancy - baby not yet delivered",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -442,7 +442,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "199167007",
-      "display" : "Gonorrhoea during pregnancy, childbirth or the puerperium NOS",
+      "display" : "Gonorrhea during pregnancy, childbirth or the puerperium NOS",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -516,7 +516,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "237043008",
-      "display" : "Fitz-Hugh-Curtis syndrome - chlamydial"
+      "display" : "Chlamydial perihepatitis"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -572,7 +572,7 @@
       "system" : "http://snomed.info/sct",
       "inactive" : true,
       "code" : "240572000",
-      "display" : "Complicated local gonorrhoea",
+      "display" : "Gonorrhea with local complication",
       "property" : [{
         "code" : "status",
         "valueCode" : "inactive"
@@ -606,7 +606,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "240578001",
-      "display" : "Gonococcal Littre's gland abscess"
+      "display" : "Gonococcal Littré gland abscess"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -631,7 +631,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "240583009",
-      "display" : "Gonococcal skin lesion"
+      "display" : "Cutaneous gonorrhea"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -771,7 +771,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "402956009",
-      "display" : "Localised cutaneous gonococcal infection"
+      "display" : "Localized cutaneous gonococcal infection"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -781,7 +781,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "402958005",
-      "display" : "Gonococcal bacteremia-induced pustular vasculitis"
+      "display" : "Pustular vasculitis due to gonococcal bacteremia"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -801,7 +801,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "444834005",
-      "display" : "Gonococcal urethral gland abscess"
+      "display" : "Abscess of urethral gland caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -901,7 +901,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "733131001",
-      "display" : "Gonococcal infection of musculoskeletal system"
+      "display" : "Infection of musculoskeletal system caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -916,7 +916,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "762257007",
-      "display" : "Disseminated gonococcal infection"
+      "display" : "Disseminated infection caused by Neisseria gonorrhoeae"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -936,7 +936,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "788961008",
-      "display" : "Gonorrhoea of penis"
+      "display" : "Gonorrhea of penis"
     },
     {
       "system" : "http://snomed.info/sct",

@@ -1,0 +1,12 @@
+{
+  "resourceType": "ValueSet",
+  "url": "http://hl7.org/fhir/test/ValueSet/langcodes-all",
+  "status": "active",
+  "compose": {
+    "include": [
+      {
+        "system": "urn:ietf:bcp:47"
+      }
+    ]
+  }
+}

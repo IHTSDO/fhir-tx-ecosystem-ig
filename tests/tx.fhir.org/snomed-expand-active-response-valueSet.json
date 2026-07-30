@@ -22,7 +22,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "10807061000119103",
-      "display" : "Liver disorder in childbirth"
+      "display" : "Liver disorder in mother complicating childbirth"
     },
     {
       "system" : "http://snomed.info/sct",
@@ -32,7 +32,7 @@
     {
       "system" : "http://snomed.info/sct",
       "code" : "235888006",
-      "display" : "Intrahepatic cholestasis of pregnancy"
+      "display" : "Cholestasis of pregnancy"
     },
     {
       "system" : "http://snomed.info/sct",

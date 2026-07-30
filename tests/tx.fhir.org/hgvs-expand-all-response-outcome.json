@@ -1,0 +1,15 @@
+{
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "extension" : [{
+      "$optional$" : "!tx.fhir.org",
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "CODESYSTEM_NOT_ENUMERABLE"
+    }],
+    "severity" : "error",
+    "code" : "not-supported",
+    "details" : {
+      "text" : "The code system 'http://varnomen.hgvs.org' cannot be expanded because its codes cannot be iterated or enumerated in any meaningful sense"
+    }
+  }]
+}

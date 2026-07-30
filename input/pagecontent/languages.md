@@ -20,7 +20,7 @@ Clients can specify the return displayLanguage in one of four places:
 
 * Using a displayLanguage parameter in the request
 * Using a displayLanguage parameter in the value set using the 
-[[[http://hl7.org/fhir/tools/StructureDefinion/valueset-expansion-parameter]]] extension
+[[[http://hl7.org/fhir/tools/StructureDefinition/valueset-expansion-parameter]]] extension
 * Using the http Accept-Language header 
 * ValueSet.language
 
@@ -31,6 +31,36 @@ of operational control on the client. ValueSet Language is a single language cod
 
 From a server point of view, the order of priority for the displayLanguage parameter is 
 `request parameter` > `valueset-extension` > `HTTP Header` > `ValueSet.language`
+
+#### Language and Server Selection
+
+Language doesn't just affect what a server returns - in the [ecosystem](ecosystem.html), it affects 
+*which server should be used*, because authoritative claims can be made for particular languages: 
+different servers may be the appropriate destination for the same code system depending on the 
+language of the request (typically because they have different supplements loaded).
+
+Consequences for clients using the ecosystem:
+
+* Clients SHALL resolve the display language (from the four sources above, in priority order) *before* 
+  server selection, and pass it as the `language` parameter in the coordination server's resolve call 
+* The language used for routing and the language used in the subsequent operation must be the same
+* Only language-sensitive operations should be routed with a language: `$expand` where a display 
+  language is in play, `$validate-code` that carries a display language (even when no display is 
+  provided to check, the display in the response comes back in the requested language, and callers 
+  use it - e.g. display lookups when rendering), `$lookup` requesting designations. In practice: 
+  route with the language whenever the request specifies one; requests with no language interest 
+  should not invent one
+* If no server has a language specific claim matching the language, the resolve call returns the 
+  default authoritative server. Whether to use it anyway (accepting displays in whatever language 
+  it has - the `de, *;q=0.1` behavior) or to treat the language as unavailable (the `de, *;q=0` 
+  behavior) remains the client's decision, exactly as it is for a single server
+* Candidate servers returned for a language-specific resolve are marked `language-support: unknown` - 
+  they host the code system, but the ecosystem does not know whether they can supply the requested 
+  language. They are only usable under the wildcard reading; in particular, do not validate displays 
+  against them
+
+See [Language Specific Claims](ecosystem.html#language-specific-claims) for the registration format, 
+matching rules, and resolution ordering.
 
 ### Value Set Language Control
 
@@ -64,7 +94,7 @@ The first four tests simply echo the four code systems back with no language rul
 * **language-echo-en-none**: just return codes from an english based code system. All codes get english displays
 * **language-echo-de-none**: just return codes from an german based code system. All codes get german displays
 * **language-echo-en-multi-none**: Just return codes from an english based code system that also has other designations (which are also requested)
-* **language-echo-en-multi-none**: Just return codes from an english based code system that also has other designations (which are also requested)
+* **language-echo-de-multi-none**: Just return codes from a german based code system that also has other designations (which are also requested)
 
 ## Specify the language that already exists
 

@@ -10,6 +10,10 @@
       "valueCode" : "406459008"
     },
     {
+      "name" : "system-version",
+      "valueUri" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
+    },
+    {
       "name" : "display",
       "valueString" : "Halibut liver oil-containing product"
     },
@@ -30,7 +34,7 @@
         "compose": {
           "include": [{
             "system": "http://snomed.info/sct",
-            "version" : "http://snomed.info/xsct/900000000000207008/version/20250814",
+            "version" : "http://snomed.info/xsct/31000003106/version/20250909",
             "filter": [{"property": "concept", "op": "is-a", "value": "128241005"}]
           }]
         }
