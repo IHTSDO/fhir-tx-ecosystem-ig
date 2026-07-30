@@ -51,3 +51,5 @@ test-results
 .idea
 *.jar
 *.zip
+
+tests/generate-test-report-xlsx.py
