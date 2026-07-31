@@ -53,3 +53,4 @@ test-results
 *.zip
 
 tests/generate-test-report-xlsx.py
+tests/release-history.jsonl
