@@ -54,3 +54,7 @@ test-results
 
 tests/generate-test-report-xlsx.py
 tests/release-history.jsonl
+
+/.tx-tests/
+/snowstorm-src/
+/tests-src/

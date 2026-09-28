@@ -1,0 +1,10 @@
+# Tests whose result changes between runs against the same Snowstorm build; they are run and
+# reported, but never fail the build. All pick between several versions of the same code system.
+overload/expand-all
+overload/expand-all-sysver
+overload/expand-all-versioned
+overload/expand-exclude-enum
+overload/expand-mixed
+overload/validate-all-good
+overload/validate-all-good2
+overload/validate-good-code2-v1display
