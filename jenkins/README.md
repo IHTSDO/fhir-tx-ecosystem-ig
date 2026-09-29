@@ -9,7 +9,9 @@ The `Jenkinsfile` at the repository root does the following:
    `http://snomed.info/xsct/900000000000207008/version/20250814`.
 4. Runs the tests (modes `general`, `snomed` and `flat`; `flat` because Snowstorm returns non-hierarchical expansions) with the HL7 validator's `txTests` command.
 5. Fails the build if a test listed in the baseline for that `TESTS_REF` and validator,
-   `baselines/<TESTS_REF>/validator-<version>.txt`, no longer passes.
+   `baselines/<TESTS_REF>/validator-<version>.txt`, no longer passes or was not run. A test that
+   was not run usually means txTests stopped early. When `TX_FILTER` is set, baseline tests
+   the filter leaves out are not counted.
 
 Many tests do not pass on Snowstorm yet, so they are not treated as failures. In the Jenkins
 test report they show as skipped, and each regression shows as a failure.
@@ -25,7 +27,7 @@ curl and python3. Java 25 and Maven run in the `amazoncorretto:25` and
 `maven:3.9-amazoncorretto-25` images, and the Maven build shares the Jenkins user's `~/.m2`.
 The nightly cron trigger takes effect after the job's first run.
 
-When a build of Snowstorm `develop` fails, a Slack alert goes to the channel set for `snowstorm`
+When a build of Snowstorm `develop` fails or is unstable, a Slack alert goes to the channel set for `snowstorm`
 in the Code Estate spreadsheet. The job looks that up with snomed-jenkins'
 `$SCRIPTS_PATH/PipelineGetConfig.sh`. Builds of other branches don't send alerts.
 
@@ -38,14 +40,25 @@ Different IG versions and different validator versions give different results, s
 has its own baseline: `baselines/<TESTS_REF>/validator-<version>.txt`, for example
 `baselines/1.9.1/validator-6.9.9.txt`. The validator version is read from `report.json`, so
 `VALIDATOR_VERSION=latest` picks the baseline for whichever release it downloaded. In
-`TESTS_REF`, a `/` is replaced by `-`, and a blank `TESTS_REF` uses `head`.
+`TESTS_REF`, a `/` is replaced by `-`.
 
 The job scripts always come from the job branch. Only `tests/` and `tx-source/` are taken from
 `TESTS_REF`, so to test another IG release or validator, run the job with those parameters.
-You don't need a separate branch.
+You don't need a separate branch. `TESTS_REF` is required, because the job branch doesn't
+follow `main`, so its own `tests/` are out of date.
 
-If a pair has no baseline file, the build runs in report-only mode, where no test can fail the
-build. To add a baseline:
+HL7 doesn't tag IG releases upstream, and `checkout-tests.sh` fetches only from `origin`
+(IHTSDO/fhir-tx-ecosystem-ig). Tags such as `1.9.1` are created in this fork. To test a newer
+version:
+
+1. Sync the fork's `main` with `upstream/main`.
+2. Tag the commit you want and push the tag, for example
+   `git tag 1.9.2 <commit> && git push origin 1.9.2`.
+
+A commit SHA also works as `TESTS_REF`, but its baselines are then filed under that SHA.
+
+If a pair has no baseline file, the build runs in report-only mode and is marked unstable, so a
+new validator or IG version can't quietly stop the regression checks. To add a baseline:
 
 1. Run the job with the new `TESTS_REF` and/or `VALIDATOR_VERSION`.
 2. Commit the archived `baseline-passing.txt` as

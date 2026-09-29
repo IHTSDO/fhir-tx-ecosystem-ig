@@ -1,13 +1,15 @@
 #!/usr/bin/env python3
 """Compare a txTests report.json with the baseline of tests known to pass on Snowstorm.
 
-Exits 1 when a baseline test no longer passes. Newly passing tests are reported so the
-baseline can be ratcheted up with --write-baseline. A JUnit file is written for Jenkins:
-regressions are failures, tests not yet in the baseline are skipped, the rest pass.
+Exits 1 when a baseline test no longer passes, or was not run at all unless --tx-filter is set.
+Newly passing tests are reported so the baseline can be ratcheted up with --write-baseline.
+A JUnit file is written for Jenkins: regressions are failures, tests not yet in the baseline
+are skipped, the rest pass.
 Tests listed in the flaky files are run and reported but never fail the build or enter the baseline.
 Baselines are kept per IG version and validator version, in
 jenkins/baselines/<ref>/validator-<version>.txt, and flaky lists per IG version, in
-jenkins/flaky/<ref>.txt. A run with no baseline for its pair is reported on but never fails.
+jenkins/flaky/<ref>.txt. A run with no baseline for its pair is reported on only, and exits 2
+so that Jenkins can mark it unstable.
 """
 
 import argparse
@@ -48,11 +50,14 @@ def ref_key(ref):
     return ref.strip().replace("/", "-") or "head"
 
 
-def write_junit(path, results, flaky, regressions):
+def write_junit(path, results, flaky, regressions, not_run):
     suites = defaultdict(list)
     for name, outcome in results.items():
         suite, _, test = name.partition("/")
         suites[suite].append((test, name, outcome))
+    for name in not_run:
+        suite, _, test = name.partition("/")
+        suites[suite].append((test, name, ("not run", "In the baseline but not in report.json")))
 
     root = ET.Element("testsuites", name="tx-ecosystem")
     for suite_name, tests in suites.items():
@@ -61,6 +66,8 @@ def write_junit(path, results, flaky, regressions):
             case = ET.SubElement(suite, "testcase", classname=f"tx-ecosystem.{suite_name}", name=test)
             if name in regressions:
                 ET.SubElement(case, "failure", message="Regression: passed in baseline").text = message
+            elif name in not_run:
+                ET.SubElement(case, "failure", message="Regression: in the baseline but not run").text = message
             elif result != "pass":
                 reason = "Flaky, ignored" if name in flaky else "Known failure (not in baseline)"
                 ET.SubElement(case, "skipped", message=reason).text = message
@@ -76,6 +83,8 @@ def main():
     parser.add_argument("--baseline", help="Default: jenkins/baselines/<ref>/validator-<version in the report>.txt")
     parser.add_argument("--flaky", action="append",
                         help="May be repeated. Default: jenkins/flaky/<ref>.txt and jenkins/flaky/common.txt")
+    parser.add_argument("--tx-filter", default=os.environ.get("TX_FILTER", ""),
+                        help="txTests -filter the run used; baseline tests it left out are not counted (default $TX_FILTER)")
     parser.add_argument("--junit", default="test-results/junit.xml")
     parser.add_argument("--write-baseline", metavar="PATH",
                         help="Also write the tests passing in this run to PATH, in baseline format")
@@ -93,10 +102,10 @@ def main():
 
     regressions = sorted(name for name in baseline if name in results and name not in passing)
     newly_passing = sorted(passing - baseline - flaky)
-    missing = sorted(baseline - results.keys())
+    not_run = [] if args.tx_filter else sorted(baseline - results.keys())
     flaky_failing = sorted(name for name in flaky if name in results and name not in passing)
 
-    write_junit(args.junit, results, flaky, set(regressions))
+    write_junit(args.junit, results, flaky, set(regressions), set(not_run))
 
     server = next((p.get("display") for p in report.get("participant", [])), "unknown server")
     print(f"{report.get('tester', 'txTests')} against {server}")
@@ -105,8 +114,7 @@ def main():
     print(f"{len(passing)}/{len(results)} passed; baseline has {len(baseline)} tests")
 
     for title, names in (("Newly passing (add to the baseline)", newly_passing),
-                         ("Flaky tests that failed this time (ignored)", flaky_failing),
-                         ("In the baseline but not run (renamed or removed?)", missing)):
+                         ("Flaky tests that failed this time (ignored)", flaky_failing)):
         if names:
             print(f"\n{title}: {len(names)}")
             for name in names:
@@ -118,6 +126,11 @@ def main():
             message = results[name][1].replace("\n", " ")
             print(f"  {name}: {message}")
 
+    if not_run:
+        print(f"\nREGRESSIONS - in the baseline but not run (txTests stopped early, or renamed or removed?): {len(not_run)}")
+        for name in not_run:
+            print(f"  {name}")
+
     if args.write_baseline:
         Path(args.write_baseline).write_text(
             "# Tests that pass on Snowstorm; a failure of any of these fails the Jenkins build.\n"
@@ -125,7 +138,9 @@ def main():
             + "".join(f"{name}\n" for name in sorted(passing - flaky)))
         print(f"\nWrote {len(passing - flaky)} passing tests to {args.write_baseline}")
 
-    return 1 if regressions else 0
+    if regressions or not_run:
+        return 1
+    return 2 if report_only else 0
 
 
 if __name__ == "__main__":
