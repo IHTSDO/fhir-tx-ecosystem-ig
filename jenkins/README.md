@@ -21,18 +21,63 @@ Snowstorm build. They are run and reported but can't fail the build or enter the
 
 ## Jenkins setup
 
-Create a Pipeline job (for example `_FhirTxTests_`) using "Pipeline script from SCM", pointing
-at this repository's `snowstorm-tx-tests` branch (kept apart from `main`, which mirrors upstream HL7) with script path `Jenkinsfile`. The agent needs Docker, git,
-curl and python3. Java 25 and Maven run in the `amazoncorretto:25` and
-`maven:3.9-amazoncorretto-25` images, and the Maven build shares the Jenkins user's `~/.m2`.
-The nightly cron trigger takes effect after the job's first run.
+### Agent
 
-When a build of Snowstorm `develop` fails or is unstable, a Slack alert goes to the channel set for `snowstorm`
-in the Code Estate spreadsheet. The job looks that up with snomed-jenkins'
-`$SCRIPTS_PATH/PipelineGetConfig.sh`. Builds of other branches don't send alerts.
+The build agent needs:
+
+- Docker, git, curl and python3. The Jenkins user must be able to run `docker` without sudo,
+  for example by being in the `docker` group.
+- About 4 GB of free memory for Docker.
+- Network access to GitHub, Docker Hub and `docker.elastic.co`.
+
+Java 25 and Maven run in the `amazoncorretto:25` and `maven:3.9-amazoncorretto-25` images, and
+the Maven build shares the Jenkins user's `~/.m2`. The Jenkinsfile uses `agent any`. If some
+agents don't have Docker, pin the job to one that does, with "Restrict where this project can
+be run" or an `agent { label '...' }`.
+
+Plugins: Declarative Pipeline, Git, JUnit, AnsiColor and Slack Notification.
+
+### Creating the job
+
+1. Go to **New Item**, enter a name (for example `_FhirTxTests_`), choose **Pipeline**, then OK.
+2. Under **Pipeline**, set **Definition** to *Pipeline script from SCM* and fill in:
+   - **SCM**: Git
+   - **Repository URL**: `https://github.com/IHTSDO/fhir-tx-ecosystem-ig.git` (public, so no
+     credentials are needed)
+   - **Branch Specifier**: `*/snowstorm-tx-tests`. This branch is kept apart from `main`,
+     which mirrors upstream HL7.
+   - **Script Path**: `Jenkinsfile`
+3. Leave the remote name as the default, `origin`, because `checkout-tests.sh` fetches the
+   tests from it. Don't disable tag fetching.
+4. Save. You don't need to add parameters, a build trigger or build retention settings; they're
+   all in the Jenkinsfile.
+
+If SNOMED jobs are created by snomed-jenkins rather than by hand, register this job that way
+instead, with the same settings.
+
+### First run
+
+Click **Build Now**. The first build registers the parameters and the nightly schedule
+(around 02:00, Monday to Friday) and runs with the defaults: Snowstorm `develop`, tests `1.9.1`
+and validator `6.9.9`. After that, use **Build with Parameters** to test other IG versions,
+validators or Snowstorm branches. A build times out after 2 hours.
+
+### Build results
+
+- **Green:** no regressions against the baseline.
+- **Yellow (unstable):** there's no baseline for that `TESTS_REF` and validator. The log names
+  the file it looked for.
+- **Red:** there are regressions or baseline tests that didn't run. They're listed in the log
+  and in the **Test Result** page.
 
 Each build archives `test-results/`. That includes `report.json`, `junit.xml`, `snowstorm.log`
 and `baseline-passing.txt`, which lists the tests that passed in that build.
+
+When a build of Snowstorm `develop` fails or is unstable, a Slack alert goes to the channel set
+for `snowstorm` in the Code Estate spreadsheet. The job looks that up with snomed-jenkins'
+`$SCRIPTS_PATH/PipelineGetConfig.sh`, so `SCRIPTS_PATH` must be set on the agent. Without it,
+the build still works, but no alert goes out and the log says "No Slack channel found".
+Builds of other branches don't send alerts.
 
 ## Baselines
 
