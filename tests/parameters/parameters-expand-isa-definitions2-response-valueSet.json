@@ -49,7 +49,6 @@
       "uri" : "http://hl7.org/fhir/concept-properties#definition"
     },
     {
-      "$optional$" : true,
       "code" : "status",
       "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
@@ -71,7 +70,6 @@
         "valueString" : "My second code, with children"
       },
       {
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }],

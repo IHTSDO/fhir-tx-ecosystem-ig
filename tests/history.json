@@ -1,7 +1,10 @@
 {
   "title" : "Terminology Tests History",
-  "description" : "This page details the changes made to the terminology tests over time based on the github releases. Note that the github repository that contains these tests contains many other test cases for other kind of functionality. This history file only contains entries for github releases that include changes to the terminology tests.",
+  "description" : "The change history for the terminology tests is maintained on the [test history](test-history.html) page in this IG. The entries below are the historical ones from before that page existed; this file is retained because the TxTester reads the current version from it.",
   "versions" : [{
+    "version" : "1.9.3",
+    "markdown" : "The change history has moved to the [test history](test-history.html) page in this IG, which is maintained from 1.9.2 onwards. This file is only still here because the TxTester reads the version from it."
+  },{
     "version" : "1.90",
     "markdown" : "* Add a set of tests for controlling the version of CodeSystems (ValueSet.compose.include.version, with wildcards, and the expansion parmaeters system-version etc\r\n* revisit the tests to ensure that\r\n* Remove the deprecated 'version' parameter that's no longer used or supported (after 1 year of grace)\r\n* Various improvements to error messages and test descriptions\r\n"
   },{

@@ -1,0 +1,34 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "match",
+    "part" : [{
+      "name" : "noMap",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "originMap",
+      "valueCanonical" : "http://hl7.org/fhir/test/ConceptMap/full|0.1.0"
+    },
+    {
+      "$only$" : "version:4",
+      "name" : "source",
+      "valueCanonical" : "http://hl7.org/fhir/test/ConceptMap/full|0.1.0"
+    },
+    {
+      "name" : "sourceComment",
+      "valueString" : "This is not mapped"
+    },
+    {
+      "name" : "sourceConcept",
+      "valueCoding" : {
+        "system" : "http://hl7.org/fhir/test/CodeSystem/source",
+        "code" : "code-4"
+      }
+    }]
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : false
+  }]
+}

@@ -1,0 +1,45 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "code",
+    "valueCode" : "ZH-hans-cn"
+  },
+  {
+    "name" : "display",
+    "valueString" : "Chinese (Script=Han (Simplified variant), Region=China)"
+  },
+  {
+    "name" : "issues",
+    "resource" : {
+      "resourceType" : "OperationOutcome",
+      "issue" : [{
+        "extension" : [{
+          "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+          "valueString" : "CODE_CASE_DIFFERENCE"
+        }],
+        "severity" : "information",
+        "code" : "business-rule",
+        "details" : {
+          "coding" : [{
+            "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+            "code" : "code-rule"
+          }],
+          "text" : "The code 'ZH-hans-cn' differs from the correct code 'zh-Hans-CN' by case. Although the code system 'urn:ietf:bcp:47' is case insensitive, implementers are strongly encouraged to use the correct case anyway"
+        },
+        "expression" : ["code"]
+      }]
+    }
+  },
+  {
+    "name" : "normalized-code",
+    "valueCode" : "zh-Hans-CN"
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : true
+  },
+  {
+    "name" : "system",
+    "valueUri" : "urn:ietf:bcp:47"
+  }]
+}

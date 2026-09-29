@@ -12,7 +12,7 @@
       }
     },
     {
-      "$optional$" : "version:5",
+      "$only$" : "version:4",
       "name" : "equivalence",
       "valueCode" : "equivalent"
     },
@@ -21,9 +21,21 @@
       "valueCanonical" : "http://snomed.info/sct?fhir_cm=900000000000526001|http://snomed.info/sct/900000000000207008/version/20250201"
     },
     {
-      "$optional$" : "version:4",
+      "$only$" : "version:5",
       "name" : "relationship",
       "valueCode" : "equivalent"
+    },
+    {
+      "$only$" : "version:4",
+      "name" : "source",
+      "valueCanonical" : "http://snomed.info/sct?fhir_cm=900000000000526001|http://snomed.info/sct/900000000000207008/version/20250201"
+    },
+    {
+      "name" : "sourceConcept",
+      "valueCoding" : {
+        "system" : "http://snomed.info/sct",
+        "code" : "225983005"
+      }
     }]
   },
   {

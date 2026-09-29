@@ -1,70 +1,386 @@
-Validator Rules
-- warning heirarchy classified iwth implies versionNeeded
-- check that versionNeeded is enforced
+ICD-11 test cases
+=================
+
+Target: the WHO ICD-API FHIR endpoint. At the time of writing:
+  https://icdapi-fhir-testing-byfzd6budwdmbabf.northeurope-01.azurewebsites.net/fhir
+  (ICD-API with FHIR Extension v2.6.0, releases 2025-01 and 2026-01)
+
+Run with:  validator_cli.jar txTests -tx <endpoint> -mode '!general' -mode icd-11
+
+The tests are loaded from the published hl7.fhir.uv.tx-ecosystem package - the
+ci-build, which is what -test-version defaults to, so nothing else is needed.
+(The flag is -test-version, not -version; it names a tx-ecosystem package
+version, not a FHIR version, and txTests rejects -version outright.)
+
+50 tests. Current score against the ICD-API: all 50 fail, 18 of them by
+exception rather than comparison, because the client cannot parse the
+expansions at all (see 3 below).
+
+A second implementation passes all 50 (FHIRsmith, 2026-09-02, backed by a local
+copy of the classification built from the native API). That matters more than it
+might look. These tests were written to assert correct behaviour rather than
+current behaviour, and a suite of red tests that nothing passes is indistinguishable
+from a suite of wrong tests - there is no evidence the answers it demands can
+actually be given. There is now. Getting there also corrected fourteen of these
+tests, listed under 0 and 0b below: every one was a case where the tests asserted
+something the wider suite had already settled the other way, and only running
+them against a server that gets the rest right could show that.
+
+All tests are pinned to release 2026-01.
+
+Three code systems are in play, each with its own canonical URL:
+  http://id.who.int/icd/entity            the Foundation
+  http://id.who.int/icd/release/11/mms    the MMS linearization
+  http://id.who.int/icd/release/11/icf    the ICF linearization
 
 
-Test cases
-
-- validate against code system 
-  - good 
-  - good in other language
-  - bad code
-  - bad version / no version
-  - bad system
-  - bad display 
-  - bad language 
-  - good display in wrong language 
-  - no display with good/bad language 
-  - reject supplement
-  - post-coordination cases - good and bad 
-  - all codes value set 
-- get on code system - check caseSensitive, versionNeeded
-
-- Lookup 
- - good code
- - bad code 
- - post-coordinated
-
-- validate against value set 
-  - known value set good
-  - known value set bad code 
-  - known value set good + bad display
-  - fooling with value sets 
-  - adhoc value set - good + bad 
-  - reject supplement in value set 
-
-- what filters are there going to be?
-  - value set for each filter 
-  - validate code good and bad for each value set
-
-  - kind of notSelectable filter 
-  - is-a concept (+ is-a variants descendent-of etc) + parent / child (exists and equals)
-  - no postCoordinatable terms 
-  - no non-complete terms - all mandatory axes have values 
-  - only base codes 
-  - on postCoordination axes (exists and value)
-  - classKind (and add to look up)
-
-- check version needed is true
+What these tests assert
+-----------------------
+They assert correct FHIR behaviour, not current ICD-API behaviour. A number of
+them fail against the ICD-API today; that is deliberate, and each one is listed
+below with what the server does now. Nothing here is a guess about an unresolved
+design question - where the community has not settled a question (see "Open
+questions" at the end) the tests assert only what is already unambiguous.
 
 
-- expand
-  - known value set + adhoc variants 
+Currently failing, with the reason
+----------------------------------
 
-  - adhoc value sets as above 
+0. Corrections to these tests, 2026-09-02.
+   Four things the tests asserted that the rest of the suite had already
+   settled the other way, found by running them against a second server:
+   - An unknown code in an enumerated include is skipped, not an error.
+     simple-expand-enum-bad and overload-expand-enum-bad both expand a compose
+     naming a code that does not exist and both expect the good codes and no
+     issue. expand-adhoc-bad-code now expects an empty expansion.
+   - $lookup echoes the `code` output parameter as it was asked, not
+     normalised: lookup-mms-uri asks by entity uri and gets the entity uri
+     back. lookup-pc-uri-form now expects the same. The normalised short form
+     is in the `code` *property*, which is what that property is for.
+   - An expansion can assert neither `id` nor `publisher`. $expand builds a
+     fresh resource and drops the id; it drops publisher too unless
+     includeDefinition was asked for. (Whether publisher belongs to the
+     "definition" is arguable - it is metadata about the value set, not part
+     of what it selects - but that is a question for the ecosystem, not for
+     these tests.) All thirteen expand expectations dropped both.
+   - `expansion.identifier` is a urn:uuid, so it is $uuid$ and not $uri$; the
+     version parameter is named `used-codesystem`; and $date$ requires a full
+     YYYY-MM-DD, so a value set whose only date is the release (2026-01)
+     asserts that literally.
+
+0b. More corrections, 2026-09-02, from the run log.
+   - Expected files have to be stored in the order TxTesterSorters produces, because only
+     the actual response is sorted before the comparison. Twelve of these files were not,
+     and failed on order alone: repeated `property` parameters sort by their code part then
+     their *value* part, which for postcoordinationValues is the axis uri - so the values
+     come back grouped by axis, not in the order they were written. expansion.contains
+     sorts by code. (The provider does not need to sort anything itself; it did briefly,
+     which was dead weight.)
+   - A subtree expansion is hierarchical: expand-adhoc-isa returns XN7N1 with its three
+     children nested inside it, not four flat entries. A server that cannot do that runs
+     the tests in `flat` mode.
+   - expand-adhoc-bad-code still carried http-code 4xx from when it expected an error.
+   - 1A02's display is "Intestinal infections due to Shigella"; "Shigellosis" is an index
+     term, not the title.
+   - An expansion with a count but no offset does not report offset 0, so offset is
+     optional there (the pattern simple-expand-enum-bad already uses).
+
+1. No client-supplied value sets, at all.
+   expand-inline-vs, expand-adhoc-*, expand-pcs-uri-form, expand-pcs-code-form,
+   vs-validate-adhoc*
+   $expand rejects a value set passed in the `valueSet` parameter ("Please
+   provide the url for the ValueSet") and ignores one passed as `tx-resource`,
+   even though `tx-resource` is declared in TerminologyCapabilities. Only
+   WHO-published value sets, addressed by url, can be expanded.
+   This is the gap that stops the IG Publisher - and any client that defines its
+   own value sets over ICD-11 - from using the ICD-API as a terminology server.
+   It is the single largest item on this list.
+
+2. Expansion parameters are declared but ignored.
+   expand-pcs-count, expand-pcs-offset, expand-pcs-filter, expand-pcs-fr
+   TerminologyCapabilities declares activeOnly, count, displayLanguage,
+   excludeNested, force-system-version, includeDefinition, includeDesignations,
+   offset, property, system-version and tx-resource. count, offset, filter,
+   displayLanguage and includeDesignations all have no effect on the response.
+   (system-version was in this list too, tested by expand-pcs-v2025, which has
+   since been removed - see "Removed tests".)
+
+3. Expansions cannot be parsed by a conformant FHIR client.
+   expand-pcs and every other expand test
+   ValueSet.expansion.contains.property.value[x] comes back as valueUri, which
+   is not one of the allowed types. The R5 client in the validator throws
+   "Not the right type for ValueSet.expansion.contains.property.value[x]: uri"
+   and never gets to compare anything - so every expand test against a
+   WHO-published value set dies at the parse. Of the allowed types, valueCode
+   or valueString is presumably what was meant.
+   Behind that: ValueSet.expansion.timestamp is 1..1 and is never returned, and
+   expansion.total and expansion.parameter are absent too.
+
+4. $expand rewrites ValueSet.url.
+   expand-pcs
+   Asking for .../257068234/postcoordinationScale/infectiousAgent returns a
+   ValueSet whose url is .../257068234/pcs/infectiousAgent, so the value set
+   that comes back cannot be found again by its own canonical url. The
+   /postcoordinationScale/ form is what $lookup itself hands out as the
+   valueSet subproperty of a postcoordinationScale property.
+
+5. $validate-code failures carry no explanation.
+   cs-validate-bad-code, vs-validate-out, vs-validate-adhoc-out
+   A failure returns `result: false` and nothing else - no `message`, no
+   `issues` OperationOutcome, and not even the `code`, `system` and `version`
+   that were validated. The tx ecosystem expects an `issues` OperationOutcome
+   carrying a tx-issue-type coding (invalid-code, not-in-vs, invalid-display).
+   cs-validate-bad-display does return a `message`, but still no `issues`.
+   vs-validate-in shows the same thing on the success path: a ValueSet
+   $validate-code that succeeds returns `result: true` and nothing else, not
+   even the code and display that were validated.
+
+6. caseSensitive is declared false but matching is case sensitive.
+   cs-validate-case
+   The CodeSystem resource says caseSensitive: false. `1a00` does not validate.
+   Resolved 2026-09-02: ICD-11 is taken to be wholly case sensitive, and the
+   declaration is the part that is wrong. Relaxing a code system from sensitive
+   to insensitive later is safe; tightening it is not, because data coded in the
+   meantime may rely on the looser rule. The test therefore asserts that `1a00`
+   is not a code.
+
+7. A correct display in another language is rejected outright.
+   cs-validate-lang
+   Resolved 2026-09-02, against the test rather than the server. The suite had
+   already settled this, six times over: validation/simple-{code,coding,
+   codeableconcept}-bad-language and the -header, -vs and -vslang variants all
+   send "Anzeige 1" - a real display of code1, in de - while asking for en, and
+   all expect result=false with an error and tx-issue-type invalid-display.
+   1A00 with display=Cholera and displayLanguage=fr is that same shape, so it
+   now expects the same answer. A display that is right in another language is
+   still not the display for the language that was asked for.
+   (What made this look open: checkDisplays() in validate.js has a branch for
+   the softer reading - NO_VALID_DISPLAY_FOUND_LANG_SOME, information,
+   display-comment - which is unreachable, because the inner hasDisplay() call
+   repeats the outer one's arguments instead of narrowing to the requested
+   language. Making it reachable would flip those six tests, so the dead branch
+   is the thing that is wrong, not the six tests. Left as it is; it is a
+   general-suite question, not an ICD-11 one.)
+
+8. An unknown display language is silently ignored.
+   lookup-bad-language
+   displayLanguage=zz returns English with no warning or error.
+   Resolved 2026-09-02: the test now asserts the same shape as
+   display/validation-wrong-de-en-bad - code=processing, tx-issue-type
+   invalid-display, message id INVALID_DISPLAY_NAME. An unusable
+   displayLanguage is the same failure whatever code system is being looked
+   up, and that expectation was already agreed; the icd-11 one had invented a
+   different shape for no reason.
+
+9. The property parameter on $lookup is ignored.
+   lookup-mms-code and the other property-restricted lookups
+   Every lookup returns the full property set - for 1A00 that is 7.5KB, most of
+   it index terms; for VV0Y, 23KB. The tests ask for a named subset.
+
+10. id, parent and child come back as valueString.
+    every lookup test
+    These are code-valued properties (this was raised in Geneva). $validate-code
+    has the same problem with its own `code` output parameter, which the
+    operation definition types as `code` and the server returns as valueString
+    (cs-validate-good, cs-validate-uri).
+
+9b. An unknown code in $lookup is not-found rather than invalid-code.
+    lookup-bad-code, lookup-foundation-bare, lookup-foundation-residual,
+    lookup-icf-pc-old
+    The code system was found; the code in it was not. That is `invalid-code`
+    ("a provided code is not valid in a code system"), which is what the other
+    62 unknown-code expectations across the suite assert; `not-found` is for a
+    code system or value set that could not be resolved at all. FHIRsmith's
+    $lookup was the one place saying not-found, and omop-lookup-code2 was the
+    one expectation written from it. Both fixed 2026-09-02.
+
+10b. Error OperationOutcomes carry only `diagnostics`.
+    every 4xx test
+    The tx ecosystem compares `details.text` and the tx-issue-type coding in
+    `details.coding`; `diagnostics` is dropped on the way through, so an
+    ICD-API error arrives at the test harness as a bare OperationOutcome with
+    no issue in it at all. Errors need details.text, and a coding from
+    http://hl7.org/fhir/tools/CodeSystem/tx-issue-type.
+
+11. Concepts with an id and no short code are not marked not-selectable.
+    lookup-mms-no-code
+    http://id.who.int/icd/release/11/mms/135352227 "Bacterial intestinal
+    infections" has an entity id, no short code, and nothing in the response
+    says it cannot be used to code with.
+
+12. A repeated postcoordination value is silently dropped.
+    lookup-pc-repeated-value
+    PB20&XM4SL9&XM4SL9&XE729&XE266 - XM4SL9 is a valid value on both the
+    medication and objectOrSubstanceProducingInjury axes of PB20. The response
+    carries `code` = PB20&XM4SL9&XE729&XE266: a different code to the one that
+    was asked about, with no issue raised. Whatever the right answer is, quietly
+    answering about a different concept is not it.
+
+12c. The order postcoordinationValues come back in, decided 2026-09-02.
+    Sorted by the value's own code, not left to right through the expression.
+    The order a coder happened to write two values in says nothing, and a
+    stable order makes two servers' answers to the same question comparable.
+
+12b. The axis binding rule, decided 2026-09-02.
+    Items 12 and 13 both come down to: given a value that is legal on more
+    than one axis of the stem, which axis does it go on? The rule taken here,
+    and now implemented, is:
+      - an axis that is not yet carrying a value is always preferred over one
+        that is. That is what keeps the two XM4SL9 of item 12 apart instead of
+        dropping the second, and what stops item 13's coalescing.
+      - among those, required axes come first, then WHO's own declaration
+        order. 1D01.0Y declares hasManifestation second (optional) and
+        hasCausingCondition fourth (required); 1G40 and 1G41 are both legal on
+        either; and reading 1D01.0Y/1G41/1G40 as causing condition then
+        manifestation is what the ICD Browser does. An axis that must be filled
+        is the one a coder is most likely to have been filling, so it gets
+        first refusal.
+    Also decided: `&` asserts that what follows is a value on an axis of the
+    stem, so a value that is on none of them is an error (item 15). `/` asserts
+    only that what follows is another element of the cluster, so a member that
+    fits an unfilled axis is taken as a value and one that does not simply
+    starts a new stem. That is what lets 1D01.0Y/1G41/1G40 and
+    NC53.Y&XK8G&XJ778/PA71&XE5UF&XE4TZ both mean what a coder means by them.
+    The display renders the syntax (cluster members joined by " / ", values in
+    brackets); the properties report the semantics. For 1D01.0Y/1G41/1G40 those
+    two disagree, and both are right.
+
+13. Values on non-disjoint axes are coalesced onto one axis.
+    lookup-pc-nondisjoint
+    1D01.0Y/1G41/1G40 - the stem declares hasCausingCondition (required) and
+    hasManifestation, both drawing on overlapping value sets. The response puts
+    1G41 and 1G40 both under hasCausingCondition. The ICD Browser puts 1G40 on
+    hasManifestation.
+    Note that $lookup *does* expose the axis-to-value binding, via the
+    postcoordinationValues property - better than the native codeinfo endpoint
+    and the ECT callback, both of which drop it. What it gets wrong is which
+    axis each value went on.
+
+14. ICF postcoordination returns a property with no value.
+    lookup-icf-pc
+    d5409.qp3 returns an `id` property whose `value` part has no value[x] at
+    all, which is not valid FHIR. The test asserts only that there is a value,
+    since the right id form for an ICF postcoordinated expression is not
+    settled. It asserted $token$ until 2026-09-02, which was wrong: $token$ is
+    [0-9a-zA-Z_][0-9a-zA-Z_.\-]* and so excludes a uri, while the MMS tests
+    assert the id of an expression is its parts in uri form joined by " & ".
+    It now asserts $string$. ICF's dot is the same operator as MMS's `&`, so
+    the uri form spells it `&` - there is only the one uri form.
+
+15. Errors do not say why.
+    lookup-pc-invalid-axis, lookup-pc-other
+    1A00&XE729 and BD11.2&XT8W both come back as a flat "could not be found in
+    the CodeSystem". The useful answer names the axis: the value is not on any
+    postcoordination scale declared by the stem.
+
+16. $versions is declared and not implemented.
+    (not a test - there is no operation for it in the harness)
+    The CapabilityStatement declares a system-level `versions` operation;
+    calling it returns 501 not-supported.
+
+17. There is no way to enumerate the code system through FHIR.
+    (not a test yet - see "Still to write")
+    The CodeSystem declares no `valueSet`, so there is no implicit all-codes
+    value set; $expand only accepts WHO-published value set urls, so no client
+    can define one; and $lookup returns `parent`/`child` but the 28 top-level
+    entities (chapters 01-26, V, X) report no parent, so nothing in the FHIR
+    API tells a client what the roots are. A tree walk works - the `child`
+    property matches the native API exactly on every entity sampled - but only
+    if you already know the roots, and it costs ~37,000 $lookup calls.
+    The native ICD-API answers this properly in 29 calls: GET
+    /icd/release/11/{release}/mms lists the 28 children, and each of those
+    with ?include=descendant returns its whole subtree. The 28 descendant sets
+    are disjoint and exclude the roots (MMS is a strict tree), totalling 37,211
+    entity ids for 2026-01, of which 17,752 are chapter X extension codes and
+    5,374 are residual /other and /unspecified nodes. Entities with
+    classKind=category always carry a short code; classKind=block never does.
+    Both the versioned (.../release/11/2026-01/mms/{id}) and unversioned
+    (.../release/11/mms/{id}) URI forms are accepted as `code` by $lookup.
+    The FHIR API should expose the roots - either an all-codes value set named
+    in CodeSystem.valueSet, or a parent-less-concepts filter, or simply letting
+    a client supply its own value set (item 1).
+
+18. The CodeSystem resources declare no filters and no properties.
+    (not a test - the harness has no CodeSystem read operation)
+    CodeSystem/ICD-11-MMS-2026-01 has no `filter` and no `property` elements,
+    yet WHO's own value sets filter on `concept is-a` and $lookup returns some
+    twenty distinct properties. A client cannot discover what it may ask for.
+    hierarchyMeaning is classified-with while versionNeeded is false, which the
+    validator will warn about.
 
 
+Passing today
+-------------
+lookup by short code and by entity URI, in MMS, ICF and the Foundation; residual
+categories (VV0Y, id .../1363559646/other) in the linearizations and correctly
+absent from the Foundation; the bare numeric id correctly rejected in the
+Foundation; displayLanguage on $lookup; simple, URI-form and cluster
+postcoordination lookups; validate-code for good codes, postcoordinated
+expressions and URI-form codes; the pre-2026 ICF postcoordination syntax
+correctly rejected; and the error responses for unknown system, unknown version
+and unknown value set.
 
 
-Parameters to test:
-- valueSet
-- valueSetVersion
-- filter
-- offset and count
-- includeDesignations + designation
-- useSupplement
-- displayLanguage
-- property
-- system-version
-- tx-resource
-- manifest 
+Open questions - deliberately not asserted
+------------------------------------------
+* Codes vs entity URIs. The Geneva straw poll ran 7-1 for bare numeric entity
+  ids across the board (option 4) over the current hybrid (option 2, 3-5).
+  Nothing here asserts an outcome: lookup-mms-code and lookup-mms-uri assert
+  only that both forms address the same concept, and vs1.json / vs2.json carry
+  the same postcoordination scale value set in each form so the two can be
+  expanded side by side. lookup-foundation-bare pins the current behaviour so
+  that a change to it is visible.
+* "Other" postcoordination - whether a value outside the stem's declared scales
+  should validate (lookup-pc-other). Left open in Geneva. The test currently
+  asserts the error, but asserts that the error explains itself.
+* How the axis-to-value binding should be represented in FHIR. The tests use
+  the server's own postcoordinationValues property shape, with two corrections
+  that stand regardless of the final design: the axis is named by its schema URI
+  (as the postcoordinationScale property on a stem already does, rather than the
+  bare name used on an expression), and each (axis, value) binding is kept
+  distinct. The wider question - whether the compact string is ever sufficient,
+  or whether a structured form has to travel with it - belongs in the IG.
+  See chat.fhir.org #ICD-11 > "validating postcoordinated codes".
+
+
+Removed tests
+-------------
+* expand-pcs-v2025, removed 2026-09-02. It pinned system-version to 2025-01 and
+  expected the 2025-01 expansion. Two things wrong with it.
+  First, what it would have tested is version selection, and there is nothing
+  about version selection that is specific to ICD-11: the version suite already
+  covers it in 36 expand tests across default, force and check, including the
+  4xx cases for pinning to a version the server does not have, and the overload
+  suite covers system-version overriding a value set's own pin. Keeping this
+  one would have meant carrying a second 460 MB release of the classification
+  to re-test machinery that is already tested, and making the whole icd-11
+  suite depend on two databases.
+  Second, it was wrong on its own terms. `system-version` without `force` is a
+  *default* - it supplies a version where the value set does not state one -
+  and the postcoordination scale value sets state theirs on every include,
+  because a scale belongs to the release it was published in. So the server was
+  right to answer 2026-01, and there was no bug to see; the earlier note here
+  saying the pin was "silently ignored" was wrong.
+  The one version question that IS specific to ICD-11 is the versioned entity
+  uri: .../release/11/2026-01/mms/{id} alongside the unversioned form, both of
+  which WHO accepts as a `code`. What a server should do when the version in
+  the uri and the version parameter disagree has no analogue in any other code
+  system. That belongs with the code-form question in "Open questions", and
+  needs the versioned form to be supported first.
+
+Still to write
+--------------
+* $subsumes across the linearization hierarchy, and across Foundation vs MMS
+  where the hierarchies differ
+* CodeSystem supplements: they must be rejected (the license forbids mappings
+  carried as concept properties; translations need a WHO agreement)
+* the remaining postcoordination filters from the original sketch: no
+  postcoordinatable terms, only base codes, all mandatory axes valued, classKind
+* requiredPostcoordination (which in practice means "strongly encouraged" - a
+  code stays valid without it)
+* allowMultipleValues: AllowAlways / NotAllowed / AllowedExceptFromSameBlock
+* the ~25,000 postcoordination scale value sets: something that samples them
+  rather than enumerating them
+* paging over a large expansion, once expansion parameters work at all
+* enumeration: an all-codes value set for each of the three code systems, and
+  an expansion of it with paging - the test that would pin item 17

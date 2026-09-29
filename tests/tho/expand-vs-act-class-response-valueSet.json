@@ -25,7 +25,6 @@
       "valueUri" : "http://hl7.org/fhir/tests/CodeSystem/act-class"
     }],
     "property" : [{
-      "$optional$" : true,
       "code" : "status",
       "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
@@ -214,7 +213,6 @@
       "inactive" : true,
       "code" : "DOCCNTNT",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -224,7 +222,6 @@
       "inactive" : true,
       "code" : "DOCLIST",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -234,7 +231,6 @@
       "inactive" : true,
       "code" : "DOCLSTITM",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -244,7 +240,6 @@
       "inactive" : true,
       "code" : "DOCPARA",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -259,7 +254,6 @@
       "inactive" : true,
       "code" : "DOCTBL",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -280,7 +274,6 @@
       "code" : "ENTRY",
       "display" : "entry",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -360,7 +353,6 @@
       "inactive" : true,
       "code" : "LINKHTML",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -390,7 +382,6 @@
       "inactive" : true,
       "code" : "LOCALATTR",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -400,7 +391,6 @@
       "inactive" : true,
       "code" : "LOCALMRKP",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -431,7 +421,6 @@
       "code" : "ORGANIZER",
       "display" : "organizer",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -511,7 +500,6 @@
       "inactive" : true,
       "code" : "REFR",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -666,7 +654,6 @@
       "inactive" : true,
       "code" : "TBLCOL",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -676,7 +663,6 @@
       "inactive" : true,
       "code" : "TBLCOLGP",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -686,7 +672,6 @@
       "inactive" : true,
       "code" : "TBLDATA",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -696,7 +681,6 @@
       "inactive" : true,
       "code" : "TBLHDR",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -706,7 +690,6 @@
       "inactive" : true,
       "code" : "TBLROW",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -756,7 +739,6 @@
       "inactive" : true,
       "code" : "ordered",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -766,7 +748,6 @@
       "inactive" : true,
       "code" : "tbody",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -776,7 +757,6 @@
       "inactive" : true,
       "code" : "tfoot",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -786,7 +766,6 @@
       "inactive" : true,
       "code" : "thead",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]
@@ -796,7 +775,6 @@
       "inactive" : true,
       "code" : "unordered",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]

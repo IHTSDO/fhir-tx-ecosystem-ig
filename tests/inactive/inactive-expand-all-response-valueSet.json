@@ -31,7 +31,6 @@
       "valueUri" : "http://hl7.org/fhir/test/CodeSystem/inactive|0.1.0"
     }],
     "property" : [{
-        "$optional$" : true,
       "code" : "status",
       "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
@@ -46,7 +45,6 @@
       "code" : "codeInactive",
       "display" : "Display inactive",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "inactive"
       }]
@@ -57,7 +55,6 @@
       "code" : "codeRetired",
       "display" : "Display Retired",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]

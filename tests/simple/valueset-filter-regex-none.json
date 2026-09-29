@@ -1,0 +1,22 @@
+{
+  "resourceType" : "ValueSet",
+  "id" : "simple-filter-regex-none",
+  "url" : "http://hl7.org/fhir/test/ValueSet/simple-filter-regex-none",
+  "version" : "5.0.0",
+  "name" : "SimpleValueSetFilterRegexNone",
+  "title" : "Simple ValueSet Filter by Regex (matching no codes)",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2023-04-01",
+  "publisher" : "FHIR Project",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/test/CodeSystem/simple",
+      "filter" : [{
+        "property" : "code",
+        "op" : "regex",
+        "value" : "code[4-9]"
+      }]
+    }]
+  }
+}

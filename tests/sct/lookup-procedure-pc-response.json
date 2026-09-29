@@ -7,7 +7,7 @@
   },
   {
     "name" : "code",
-    "valueCode" : "367430006:{272741003=24028007}"
+    "valueCode" : "367430006:{405813007=(85562004:272741003=24028007)}"
   },
   {
     "name" : "designation",
@@ -27,16 +27,16 @@
     },
     {
       "name" : "value",
-      "valueString" : "367430006|Repair of tendon of hand|:{272741003|Laterality|=24028007|Right|}"
+      "valueString" : "367430006|Repair of tendon of hand|:{405813007|Procedure site - Direct|=(85562004|Hand structure|:272741003|Laterality|=24028007|Right|)}"
     }]
   },
   {
     "name" : "display",
-    "valueString" : "367430006|Repair of tendon of hand|:{272741003|Laterality|=24028007|Right|}"
+    "valueString" : "367430006|Repair of tendon of hand|:{405813007|Procedure site - Direct|=(85562004|Hand structure|:272741003|Laterality|=24028007|Right|)}"
   },
   {
     "name" : "name",
-    "valueString" : "http://snomed.info/sct|http://snomed.info/xsct/31000003106/version/20250909"
+    "valueString" : "SNOMED CT Test Edition"
   },
   {
     "name" : "property",
@@ -61,19 +61,19 @@
     "name" : "property",
     "part" : [{
       "name" : "code",
-      "valueCode" : "272741003"
+      "valueCode" : "405813007"
     },
     {
       "name" : "code-display",
-      "valueString" : "Laterality"
+      "valueString" : "Procedure site - Direct"
     },
     {
       "name" : "description",
-      "valueString" : "Right"
+      "valueString" : "Structure of tendon within hand"
     },
     {
       "name" : "value",
-      "valueCode" : "24028007"
+      "valueCode" : "118632007"
     }]
   },
   {
@@ -88,11 +88,11 @@
     },
     {
       "name" : "description",
-      "valueString" : "Structure of tendon within hand"
+      "valueString" : "85562004|Hand structure|:272741003|Laterality|=24028007|Right|"
     },
     {
       "name" : "value",
-      "valueCode" : "118632007"
+      "valueCode" : "85562004:272741003=24028007"
     }]
   },
   {

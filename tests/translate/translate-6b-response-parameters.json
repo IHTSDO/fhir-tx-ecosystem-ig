@@ -1,0 +1,11 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "message",
+    "valueString" : "$fragments:code-6$"
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : false
+  }]
+}

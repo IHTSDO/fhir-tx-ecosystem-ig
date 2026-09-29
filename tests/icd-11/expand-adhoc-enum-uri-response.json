@@ -1,0 +1,28 @@
+{
+  "resourceType": "ValueSet",
+  "url": "http://hl7.org/fhir/uv/tx-ecosystem/ValueSet/icd11-enumerated-uri",
+  "version": "2026-01",
+  "name": "$token$",
+  "title": "$string$",
+  "status": "active",
+  "experimental": false,
+  "date": "$date$",
+  "expansion": {
+    "identifier": "$uuid$",
+    "timestamp": "$instant$",
+    "total": 1,
+    "parameter": [
+      {
+        "name": "used-codesystem",
+        "valueUri": "http://id.who.int/icd/release/11/mms|2026-01"
+      }
+    ],
+    "contains": [
+      {
+        "system": "http://id.who.int/icd/release/11/mms",
+        "code": "http://id.who.int/icd/release/11/mms/257068234",
+        "display": "Cholera"
+      }
+    ]
+  }
+}

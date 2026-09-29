@@ -11,7 +11,7 @@
         "experimental": false,
         "date": "2025-09-05",
         "publisher": "FHIR Project",
-        "description": "All active concepts in the subset (wildcard).",
+        "description": "All concepts in the subset (wildcard).",
         "compose": {
           "include": [
             {

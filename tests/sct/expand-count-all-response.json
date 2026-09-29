@@ -20,7 +20,7 @@
     "id" : "$id$",
     "identifier" : "$uuid$",
     "timestamp" : "$instant$",
-    "total" : 2238,
+    "total" : 2259,
     "parameter" : [{
       "name" : "count",
       "valueInteger" : 0

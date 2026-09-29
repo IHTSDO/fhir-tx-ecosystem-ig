@@ -20,11 +20,32 @@
       }
     ]
   },{
+    "name" : "properties",
+    "mode" : "general",
+    "description" : "Testing the ValueSet.compose.property element",
+    "setup" : ["properties/codesystem-properties.json", "properties/valueset-properties-VSCP-all-properties-wildcard.json", "properties/valueset-properties-VSCP-all-properties-enums.json"],
+    "tests" :[
+      {
+        "name" : "expand-with-valueset.compose.property-all-properties-wildcard",
+        "description" : "Expand a value set defined to request all properties using ValueSet.compose.property with a wildcard character",
+        "operation" : "expand",
+        "request" : "properties/expand-with-VSCP-all-properties-wildcard-request.json",
+        "response" : "properties/expand-with-VSCP-all-properties-wildcard-response.json"
+      },
+      {
+        "name" : "expand-with-valueset.compose.property-all-properties-enums",
+        "description" : "Expand a value set defined to request all properties using ValueSet.compose.property with enumerated properties",
+        "operation" : "expand",
+        "request" : "properties/expand-with-VSCP-all-properties-enums-request.json",
+        "response" : "properties/expand-with-VSCP-all-properties-enums-response.json"
+      }
+    ]
+  },{
     "name" : "simple-cases",
     "mode" : "general",
     "description" : "basic tests, setting up for the API tests to come",
     "setup" : ["simple/codesystem-simple.json", "simple/valueset-all.json", "simple/valueset-active.json", "simple/valueset-inactive.json", "simple/valueset-enumerated.json", "simple/valueset-enumerated-bad.json", "simple/valueset-filter-isa.json", "simple/valueset-filter-child-of.json", "simple/valueset-filter-property.json", "simple/valueset-filter-regex.json",
-    "simple/valueset-filter-regex2.json", "simple/valueset-filter-regex-prop.json"],
+    "simple/valueset-filter-regex2.json", "simple/valueset-filter-regex-prop.json", "simple/valueset-filter-regex-none.json", "simple/valueset-filter-repeating-property.json"],
     "tests" :[
       {
         "name" : "simple-expand-all",
@@ -96,6 +117,18 @@
         "request" : "simple/simple-expand-prop-request-parameters.json",
         "response" : "simple/simple-expand-prop-response-valueSet.json"
       },{
+        "name" : "simple-expand-repeating-prop",
+        "description" : "A concept may carry several values for one property (CodeSystem.concept.property is 0..*). code3 has dup=alpha and dup=beta; filtering on beta - which is not its first value - must still select it",
+        "operation" : "expand",
+        "request" : "simple/simple-expand-repeating-prop-request-parameters.json",
+        "response" : "simple/simple-expand-repeating-prop-response-valueSet.json"
+      },{
+        "name" : "simple-expand-repeating-prop-values",
+        "description" : "expansion.contains.property is 0..* as well: a concept carrying several values for one property must report all of them, not just one",
+        "operation" : "expand",
+        "request" : "simple/simple-expand-repeating-prop-values-request-parameters.json",
+        "response" : "simple/simple-expand-repeating-prop-values-response-valueSet.json"
+      },{
         "name" : "simple-expand-regex",
         "description" : "Expansion containing a filter on the code system using regex on the codes",
         "operation" : "expand",
@@ -113,6 +146,12 @@
         "operation" : "expand",
         "request" : "simple/simple-expand-regex-prop-request-parameters.json",
         "response" : "simple/simple-expand-regex-prop-response-valueSet.json"
+      },{
+        "name" : "simple-expand-regex-none",
+        "description" : "Expansion containing a filter on the code system using a valid regex on the codes that matches none of them. The expansion is empty - an include whose filter selects nothing must not be treated as an include with no filter, which would select every code in the code system",
+        "operation" : "expand",
+        "request" : "simple/simple-expand-regex-none-request-parameters.json",
+        "response" : "simple/simple-expand-regex-none-response-valueSet.json"
       },{
         "name" : "simple-lookup-1",
         "description" : "Check that $lookup works (there's not many tests for $lookup because it's not used much by the tools)",
@@ -139,6 +178,136 @@
         "operation" : "expand",
         "request" : "simple/simple-expand-contained-request-parameters.json",
         "response" : "simple/simple-expand-contained-response-valueSet.json"
+      },
+      {
+        "name" : "simple-subsumes-parent",
+        "description" : "A code subsumes a code nested inside it",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-parent-request-parameters.json",
+        "response" : "simple/simple-subsumes-parent-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-child",
+        "description" : "the mirror of simple-subsumes-parent",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-child-request-parameters.json",
+        "response" : "simple/simple-subsumes-child-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-equivalent",
+        "description" : "A code is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-equivalent-request-parameters.json",
+        "response" : "simple/simple-subsumes-equivalent-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-transitive",
+        "description" : "Subsumption follows the whole nesting, not just direct children",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-transitive-request-parameters.json",
+        "response" : "simple/simple-subsumes-transitive-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-siblings",
+        "description" : "Two sibling codes do not subsume each other",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-siblings-request-parameters.json",
+        "response" : "simple/simple-subsumes-siblings-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-unrelated",
+        "description" : "Two root level codes do not subsume each other",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-unrelated-request-parameters.json",
+        "response" : "simple/simple-subsumes-unrelated-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-root",
+        "description" : "A root code does not subsume a code under a different root",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-root-request-parameters.json",
+        "response" : "simple/simple-subsumes-root-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-unknown-code",
+        "description" : "codeA is not in the code system",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "simple/simple-subsumes-unknown-code-request-parameters.json",
+        "response" : "simple/simple-subsumes-unknown-code-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-parent-coding",
+        "description" : "As simple-subsumes-parent, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-parent-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-parent-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-child-coding",
+        "description" : "As simple-subsumes-child, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-child-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-child-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-equivalent-coding",
+        "description" : "As simple-subsumes-equivalent, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-equivalent-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-equivalent-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-transitive-coding",
+        "description" : "As simple-subsumes-transitive, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-transitive-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-transitive-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-siblings-coding",
+        "description" : "As simple-subsumes-siblings, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-siblings-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-siblings-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-unrelated-coding",
+        "description" : "As simple-subsumes-unrelated, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-unrelated-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-unrelated-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-root-coding",
+        "description" : "As simple-subsumes-root, but with codingA/codingB",
+        "operation" : "subsumes",
+        "request" : "simple/simple-subsumes-root-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-root-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-unknown-code-coding",
+        "description" : "As simple-subsumes-unknown-code, but with codingA/codingB",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "simple/simple-subsumes-unknown-code-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-unknown-code-coding-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-no-system",
+        "description" : "codeA and codeB with no system parameter - the request is invalid (400)",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "simple/simple-subsumes-no-system-request-parameters.json",
+        "response" : "simple/simple-subsumes-no-system-response-parameters.json"
+      },
+      {
+        "name" : "simple-subsumes-no-system-coding",
+        "description" : "As simple-subsumes-no-system, but with codingA/codingB that have no system",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "simple/simple-subsumes-no-system-coding-request-parameters.json",
+        "response" : "simple/simple-subsumes-no-system-coding-response-parameters.json"
       }
     ]
   },{
@@ -850,11 +1019,20 @@
         "response" : "extensions/validate-coding-good2-supplement-response-parameters.json"
       },
       {
-        "name" : "validate-code-inactive-display",
-        "description" : "Check handling of a deprecated designation",
+        "name" : "validate-code-inactive-display-lenient",
+        "description" : "Check handling of a deprecated designation (lenient display validation)",
         "operation" : "cs-validate-code",
+        "lenient-display" : true,
         "request" : "extensions/validate-code-inactive-display-request-parameters.json",
-        "response" : "extensions/validate-code-inactive-display-response-outcome.json"
+        "response" : "extensions/validate-code-inactive-display-lenient-response-outcome.json"
+      },
+      {
+        "name" : "validate-code-inactive-display-notlenient",
+        "description" : "Check handling of a deprecated designation (strict display validation)",
+        "operation" : "cs-validate-code",
+        "lenient-display" : false,
+        "request" : "extensions/validate-code-inactive-display-request-parameters.json",
+        "response" : "extensions/validate-code-inactive-display-not-lenient-response-outcome.json"
       },
       {
         "name" : "validate-code-inactive",
@@ -868,7 +1046,7 @@
     "name" : "validation",
     "mode" : "general",
     "description" : "Testing various validation parameter combinations",
-    "setup" : ["simple/codesystem-simple.json", "simple/valueset-all.json", "simple/valueset-import-bad.json", "simple/valueset-enumerated.json", "simple/valueset-filter-isa.json", "simple/valueset-filter-property.json", "simple/valueset-filter-regex.json",
+    "setup" : ["simple/codesystem-simple.json", "simple/valueset-all.json", "simple/valueset-import-bad.json", "simple/valueset-enumerated.json", "simple/valueset-filter-isa.json", "simple/valueset-filter-child-of.json", "simple/valueset-filter-property.json", "simple/valueset-filter-regex.json", "simple/valueset-filter-regex-none.json",
         "language/codesystem-de-multi.json", "language/codesystem-de-single.json", "language/codesystem-en-multi.json", "language/codesystem-en-single.json",
         "language/valueset-de-multi.json", "language/valueset-de-single.json", "language/valueset-en-multi.json", "language/valueset-en-single.json",
         "language/valueset-en-enlang-multi.json", "language/valueset-en-en-multi.json", "inactive/valueset-all.json", "inactive/codesystem-inactive.json",
@@ -881,6 +1059,20 @@
         "operation" : "validate-code",
         "request" : "validation/simple-code-good-request-parameters.json",
         "response" :  "validation/simple-code-good-response-parameters.json"
+      },
+      {
+        "name" : "validation-simple-child-of-child",
+        "description" : "child-of picks up a direct child - here the hierarchy is stated by nesting",
+        "operation" : "validate-code",
+        "request" : "validation/simple-child-of-child-request-parameters.json",
+        "response" :  "validation/simple-child-of-child-response-parameters.json"
+      },
+      {
+        "name" : "validation-simple-child-of-grandchild",
+        "description" : "and it stops there: a grandchild is not a child",
+        "operation" : "validate-code",
+        "request" : "validation/simple-child-of-grandchild-request-parameters.json",
+        "response" :  "validation/simple-child-of-grandchild-response-parameters.json"
       },
       {
         "name" : "validation-simple-code-implied-good",
@@ -998,6 +1190,13 @@
         "response" :  "validation/simple-coding-bad-system-response-parameters.json"
       },
       {
+        "name" : "validation-simple-codeableconcept-unknown-system",
+        "description" : "A CodeableConcept with a coding from an unknown code system alongside a coding that is in the value set. The unknown system cannot be checked, but membership is satisfied by the other coding, so the result is true with a warning",
+        "operation" : "validate-code",
+        "request" : "validation/simple-codeableconcept-unknown-system-request-parameters.json",
+        "response" : "validation/simple-codeableconcept-unknown-system-response-parameters.json"
+      },
+      {
         "name" : "validation-simple-coding-bad-system2",
         "description" : "to be provided",
         "operation" : "validate-code",
@@ -1047,11 +1246,20 @@
         "response" : "validation/simple-codeableconcept-good-display-response-parameters.json"
       },
       {
-        "name" : "validation-simple-code-bad-display",
-        "description" : "to be provided",
+        "name" : "validation-simple-code-bad-display-lenient",
+        "description" : "a bad display, with lenient display validation - a warning, and the code is valid",
         "operation" : "validate-code",
+        "lenient-display" : true,
         "request" : "validation/simple-code-bad-display-request-parameters.json",
-        "response" :  "validation/simple-code-bad-display-response-parameters.json"
+        "response" :  "validation/simple-code-bad-display-lenient-response-parameters.json"
+      },
+      {
+        "name" : "validation-simple-code-bad-display-notlenient",
+        "description" : "a bad display, with strict display validation - an error, and the code is not valid",
+        "operation" : "validate-code",
+        "lenient-display" : false,
+        "request" : "validation/simple-code-bad-display-request-parameters.json",
+        "response" :  "validation/simple-code-bad-display-not-lenient-response-parameters.json"
       },
       {
         "name" : "validation-simple-code-bad-display-ws",
@@ -1136,6 +1344,13 @@
         "operation" : "validate-code",
         "request" : "validation/simple-code-bad-regex-request-parameters.json",
         "response" :  "validation/simple-code-bad-regex-response-parameters.json"
+      },
+      {
+        "name" : "validation-simple-code-regex-none",
+        "description" : "A code that exists in the code system is not in a value set whose only include is a valid regex filter that matches no codes",
+        "operation" : "validate-code",
+        "request" : "validation/simple-code-regex-none-request-parameters.json",
+        "response" :  "validation/simple-code-regex-none-response-parameters.json"
       },
       {
         "name" : "validation-simple-coding-bad-language",
@@ -1256,6 +1471,138 @@
         "operation" : "validate-code",
         "request" : "validation/validate-contained-bad-request.json",
         "response" : "validation/validate-contained-bad-response.json"
+      },
+      {
+        "name" : "validation-missing-vs-code-no-system",
+        "description" : "A code parameter with no system and no inferSystem: the server cannot tell what code system the code is from, so the request is an error",
+        "operation" : "validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-vs-code-no-system-request-parameters.json",
+        "response" : "validation/missing-vs-code-no-system-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-vs-system-no-code",
+        "description" : "A system parameter but no code at all: there is nothing to validate, so the request is an error",
+        "operation" : "validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-vs-system-no-code-request-parameters.json",
+        "response" : "validation/missing-vs-system-no-code-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-vs-nothing",
+        "description" : "No code, coding or codeableConcept at all: there is nothing to validate, so the request is an error",
+        "operation" : "validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-vs-nothing-request-parameters.json",
+        "response" : "validation/missing-vs-nothing-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-vs-coding-no-code",
+        "description" : "A Coding with a system but no code. The parameter was provided, so this is a validation outcome (result = false), not a request error. Only one issue: the Coding cannot be validated. There is no code to report as not being in the value set",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-coding-no-code-request-parameters.json",
+        "response" : "validation/missing-vs-coding-no-code-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-coding-display-only",
+        "description" : "A Coding with neither system nor code - only a display. That is one problem, not two: the server reports a single warning saying that neither a system nor a code was provided, rather than one message about each",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-coding-display-only-request-parameters.json",
+        "response" : "validation/missing-vs-coding-display-only-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-cc-no-system",
+        "description" : "A CodeableConcept whose only coding has no system: the coding cannot be validated (warning - inferSystem was not asked for), it is not a valid coding for the value set (information), and the CodeableConcept as a whole fails (error)",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-cc-no-system-request-parameters.json",
+        "response" : "validation/missing-vs-cc-no-system-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-cc-no-code",
+        "description" : "A CodeableConcept whose only coding has a system but no code: the coding cannot be validated, and the CodeableConcept as a whole fails",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-cc-no-code-request-parameters.json",
+        "response" : "validation/missing-vs-cc-no-code-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-cc-text-only",
+        "description" : "A CodeableConcept with text and no codings at all: nothing to validate against the value set, so the CodeableConcept fails with a single error",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-cc-text-only-request-parameters.json",
+        "response" : "validation/missing-vs-cc-text-only-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-cc-mixed",
+        "description" : "A CodeableConcept with a systemless coding alongside a valid one: the valid coding carries the result (true), and the systemless coding is reported as a warning against that coding",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-cc-mixed-request-parameters.json",
+        "response" : "validation/missing-vs-cc-mixed-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-cs-code-no-url",
+        "description" : "A code parameter with no url: there is no code system to validate the code against, so the request is an error",
+        "operation" : "cs-validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-cs-code-no-url-request-parameters.json",
+        "response" : "validation/missing-cs-code-no-url-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-cs-url-no-code",
+        "description" : "A url but no code, coding or codeableConcept: there is nothing to validate, so the request is an error",
+        "operation" : "cs-validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-cs-url-no-code-request-parameters.json",
+        "response" : "validation/missing-cs-url-no-code-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-cs-nothing",
+        "description" : "No parameters at all: the request is an error",
+        "operation" : "cs-validate-code",
+        "http-code" : "4xx",
+        "request" : "validation/missing-cs-nothing-request-parameters.json",
+        "response" : "validation/missing-cs-nothing-response-outcome.json"
+      },
+      {
+        "name" : "validation-missing-cs-coding-no-code",
+        "description" : "A Coding with a system but no code, validated against the code system: the parameter was provided, so this is a validation outcome (result = false), not a request error",
+        "operation" : "cs-validate-code",
+        "request" : "validation/missing-cs-coding-no-code-request-parameters.json",
+        "response" : "validation/missing-cs-coding-no-code-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-cs-coding-no-system",
+        "description" : "A Coding with a code but no system, and no url either: nothing identifies the code system, so the code cannot be validated. The issue is a warning - only the caller knows whether a code with no system is acceptable in its context - but the code did not validate, so result is false",
+        "operation" : "cs-validate-code",
+        "request" : "validation/missing-cs-coding-no-system-request-parameters.json",
+        "response" : "validation/missing-cs-coding-no-system-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-cs-cc-no-system",
+        "description" : "A CodeableConcept whose only coding has no system, validated against the code system. The issue is a warning, and is reported against the coding, not the CodeableConcept",
+        "operation" : "cs-validate-code",
+        "request" : "validation/missing-cs-cc-no-system-request-parameters.json",
+        "response" : "validation/missing-cs-cc-no-system-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-cs-cc-no-code",
+        "description" : "A CodeableConcept whose only coding has a system but no code, validated against the code system",
+        "operation" : "cs-validate-code",
+        "request" : "validation/missing-cs-cc-no-code-request-parameters.json",
+        "response" : "validation/missing-cs-cc-no-code-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-coding-no-system-infer",
+        "description" : "A Coding with no system and inferSystem = true: inferSystem is defined only for the code parameter, so it does not apply to a Coding - the server ignores it, and reports the systemless coding exactly as it does without it",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-coding-no-system-infer-request-parameters.json",
+        "response" : "validation/missing-vs-coding-no-system-infer-response-parameters.json"
+      },
+      {
+        "name" : "validation-missing-vs-cc-no-system-infer",
+        "description" : "A CodeableConcept whose only coding has no system, with inferSystem = true: inferSystem is defined only for the code parameter, so it does not apply to the codings of a CodeableConcept, and the response is the same as without it",
+        "operation" : "validate-code",
+        "request" : "validation/missing-vs-cc-no-system-infer-request-parameters.json",
+        "response" : "validation/missing-vs-cc-no-system-infer-response-parameters.json"
       }
     ]
   },{
@@ -3891,24 +4238,168 @@
     "tests" : [
       {
         "name" : "translate-1",
-        "description" : "A very simple translation",
+        "description" : "A very simple translation, using sourceCode + sourceSystem",
         "operation" : "translate",
         "request" : "translate/translate-1-request-parameters.json",
         "response" : "translate/translate-1-response-parameters.json"
       },
       {
-        "name" : "translate-reverse",
+        "name" : "translate-1-coding",
+        "description" : "The same translation, but naming the source concept with sourceCoding",
+        "operation" : "translate",
+        "request" : "translate/translate-1-coding-request-parameters.json",
+        "response" : "translate/translate-1-coding-response-parameters.json"
+      },
+      {
+        "name" : "translate-1-codeableconcept",
+        "description" : "The same translation, but naming the source concept with sourceCodeableConcept",
+        "operation" : "translate",
+        "request" : "translate/translate-1-codeableconcept-request-parameters.json",
+        "response" : "translate/translate-1-codeableconcept-response-parameters.json"
+      },
+      {
+        "name" : "translate-1-r4-code",
+        "description" : "The same translation, using the R4 input names: code + system, and targetsystem",
+        "operation" : "translate",
+        "version" : "4.0",
+        "request" : "translate/translate-1-r4-code-request-parameters.json",
+        "response" : "translate/translate-1-r4-response-parameters.json"
+      },
+      {
+        "name" : "translate-1-r4-coding",
+        "description" : "The same translation, using the R4 input names: coding, and targetsystem",
+        "operation" : "translate",
+        "version" : "4.0",
+        "request" : "translate/translate-1-r4-coding-request-parameters.json",
+        "response" : "translate/translate-1-r4-response-parameters.json"
+      },
+      {
+        "name" : "translate-1-r4-codeableconcept",
+        "description" : "The same translation, using the R4 input names: codeableConcept, and targetsystem",
+        "operation" : "translate",
+        "version" : "4.0",
+        "request" : "translate/translate-1-r4-codeableconcept-request-parameters.json",
+        "response" : "translate/translate-1-r4-response-parameters.json"
+      },
+      {
+        "name" : "translate-2",
+        "description" : "Testing different relationship types",
+        "operation" : "translate",
+        "request" : "translate/translate-2-request-parameters.json",
+        "response" : "translate/translate-2-response-parameters.json"
+      },
+      {
+        "name" : "translate-2b",
+        "description" : "Testing different relationship types",
+        "operation" : "translate",
+        "request" : "translate/translate-2b-request-parameters.json",
+        "response" : "translate/translate-2b-response-parameters.json"
+      },
+      {
+        "name" : "translate-3",
+        "description" : "Testing different relationship types",
+        "operation" : "translate",
+        "request" : "translate/translate-3-request-parameters.json",
+        "response" : "translate/translate-3-response-parameters.json"
+      },
+      {
+        "name" : "translate-4",
+        "description" : "Testing nomap functionality. In R4 the ConceptMap states this with a codeless 'unmatched' target; either way the response reports noMap and no concept",
+        "operation" : "translate",
+        "request" : "translate/translate-4-request-parameters.json",
+        "response" : "translate/translate-4-response-parameters.json"
+      }
+    ]
+  },{
+    "mode" : "general",
+    "name" : "translate2",
+    "description" : "Tests for ConceptMap.$translate",
+    "setup" : [ "translate/codesystem-source.json", "translate/codesystem-target.json", "translate/ConceptMap-full.json",
+                "translate/ConceptMap-othermap.json", "translate/ConceptMap-othermap2.json",
+                "translate/ConceptMap-novs.json", "translate/valueset-source.json", "translate/valueset-target.json"],
+    "tests" : [
+      {
+        "name" : "translate-5",
+        "description" : "Testing unmapped functionality",
+        "operation" : "translate",
+        "request" : "translate/translate-5-request-parameters.json",
+        "response" : "translate/translate-5-response-parameters.json"
+      },
+      {
+        "name" : "translate-5a",
+        "description" : "Testing unmapped functionality which specifying a particular map",
+        "operation" : "translate",
+        "request" : "translate/translate-5a-request-parameters.json",
+        "response" : "translate/translate-5a-response-parameters.json"
+      },
+      {
+        "name" : "translate-5b",
+        "description" : "Testing unmapped functionality which specifying a particular map",
+        "operation" : "translate",
+        "request" : "translate/translate-5b-request-parameters.json",
+        "response" : "translate/translate-5b-response-parameters.json"
+      },
+      {
+        "name" : "translate-6a",
+        "description" : "A code that is not in any map's sourceScope has no applicable map: ConceptMap.sourceScope limits the scope of the map, so the map does not apply at all, and its unmapped does not fire either. code-6 is in CodeSystem/source but not in ValueSet/source, which is the sourceScope of full, othermap and othermap2; novs has no scope but no group for these code systems",
+        "operation" : "translate",
+        "request" : "translate/translate-6a-request-parameters.json",
+        "response" : "translate/translate-6a-response-parameters.json"
+      },
+      {
+        "name" : "translate-6b",
+        "description" : "The same, but naming the map explicitly: nominating a map does not put an out of scope code into its scope, so there is still no outcome from it",
+        "operation" : "translate",
+        "request" : "translate/translate-6b-request-parameters.json",
+        "response" : "translate/translate-6b-response-parameters.json"
+      },
+      {
+        "name" : "translate-reverse-r5+",
         "description" : "Same translation, but in reverse",
         "operation" : "translate",
-        "request" : "translate/translate-reverse-request-parameters.json",
-        "response" : "translate/translate-reverse-response-parameters.json"
+        "version": "!4.0",
+        "request" : "translate/translate-reverse-request-r5-parameters.json",
+        "response" : "translate/translate-reverse-response-r5-parameters.json"
+      },
+      {
+        "name" : "translate-reverse-r5+-a",
+        "description" : "reverse is not allowed in R5",
+        "operation" : "translate",
+        "version": "!4.0",
+        "http-code" : "4xx",
+        "request" : "translate/translate-reverse-request-r5-a-parameters.json",
+        "response" : "translate/translate-reverse-response-r5-a-outcome.json"
+      },
+      {
+        "name" : "translate-reverse-r4",
+        "description" : "Same translation, but in reverse, using the reverse parameter",
+        "operation" : "translate",
+        "version": "4.0",
+        "request" : "translate/translate-reverse-request-r4-parameters.json",
+        "response" : "translate/translate-reverse-response-r4-parameters.json"
+      },
+      {
+        "name" : "translate-reverse-r4-a",
+        "description" : "Same translation, using the reverse parameter (e.g. double reversed)",
+        "operation" : "translate",
+        "version": "4.0",
+        "request" : "translate/translate-reverse-request-r4-a-parameters.json",
+        "response" : "translate/translate-reverse-response-r4-a-parameters.json"
+      },
+      {
+        "name" : "translate-reverse-r4-b",
+        "description" : "Same translation, but in reverse, not using the reverse parameter",
+        "operation" : "translate",
+        "version": "4.0",
+        "request" : "translate/translate-reverse-request-r4-b-parameters.json",
+        "response" : "translate/translate-reverse-response-r4-b-parameters.json"
       }
     ]
   },{
     "name" : "tho",
     "mode" : "general",
     "description" : "Misc assorted test cases from tho",
-    "setup" : [ "tho/cs-act-class.json", "tho/cs-act-reason.json", "tho/vs-act-class.json" ],
+    "setup" : [ "tho/cs-act-class.json", "tho/cs-act-reason.json", "tho/vs-act-class.json", "tho/vs-act-class-isa.json", "tho/vs-act-class-descendent-of.json", "tho/vs-act-class-isnota.json", "tho/vs-act-class-isa-second-parent.json", "tho/vs-act-class-child-of.json" ],
     "tests" : [
       {
         "name" : "act-class",
@@ -3930,6 +4421,210 @@
         "operation" : "expand",
         "request" : "tho/expand-vs-act-exclusion-request.json",
         "response" : "tho/expand-vs-act-exclusion-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-property-parent",
+        "description" : "a code subsumes a code that names it in a subsumedBy property; act-class is a flat list, so there is no nesting to read",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-property-parent-request.json",
+        "response" : "tho/subsumes-act-class-property-parent-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-property-child",
+        "description" : "the mirror of subsumes-act-class-property-parent",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-property-child-request.json",
+        "response" : "tho/subsumes-act-class-property-child-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-transitive",
+        "description" : "subsumption follows the whole chain of subsumedBy properties, five links here",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-transitive-request.json",
+        "response" : "tho/subsumes-act-class-transitive-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-transitive-reverse",
+        "description" : "the mirror of subsumes-act-class-transitive",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-transitive-reverse-request.json",
+        "response" : "tho/subsumes-act-class-transitive-reverse-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-equivalent",
+        "description" : "a code is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-equivalent-request.json",
+        "response" : "tho/subsumes-act-class-equivalent-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-siblings",
+        "description" : "two codes with the same subsumedBy do not subsume each other",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-siblings-request.json",
+        "response" : "tho/subsumes-act-class-siblings-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-cross-branch",
+        "description" : "both codes are under ACT, but neither is on the other's path to it",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-cross-branch-request.json",
+        "response" : "tho/subsumes-act-class-cross-branch-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-multiple-parents-first",
+        "description" : "ENTRY states subsumedBy twice: this is the first parent",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-multiple-parents-first-request.json",
+        "response" : "tho/subsumes-act-class-multiple-parents-first-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-multiple-parents-second",
+        "description" : "and this is the second - a relationship a nested hierarchy cannot express at all",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-multiple-parents-second-request.json",
+        "response" : "tho/subsumes-act-class-multiple-parents-second-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-multiple-parents-crossed",
+        "description" : "two parents of the same code are not thereby related to each other",
+        "operation" : "subsumes",
+        "request" : "tho/subsumes-act-class-multiple-parents-crossed-request.json",
+        "response" : "tho/subsumes-act-class-multiple-parents-crossed-response.json"
+      },
+      {
+        "name" : "subsumes-act-class-unknown-code",
+        "description" : "codeB is not in the code system",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "tho/subsumes-act-class-unknown-code-request.json",
+        "response" : "tho/subsumes-act-class-unknown-code-response.json"
+      },
+      {
+        "name" : "validate-isa-self",
+        "description" : "is-a includes the code named in the filter, not just what is under it",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-self-request.json",
+        "response" : "tho/validate-isa-self-response.json"
+      },
+      {
+        "name" : "validate-isa-child",
+        "description" : "a code that names the filter code in a subsumedBy property is in the value set",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-child-request.json",
+        "response" : "tho/validate-isa-child-response.json"
+      },
+      {
+        "name" : "validate-isa-deep",
+        "description" : "and so is one five property links below it",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-deep-request.json",
+        "response" : "tho/validate-isa-deep-response.json"
+      },
+      {
+        "name" : "validate-isa-parent",
+        "description" : "is-a runs downwards: the code above the filter code is not in the value set",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-parent-request.json",
+        "response" : "tho/validate-isa-parent-response.json"
+      },
+      {
+        "name" : "validate-isa-other-branch",
+        "description" : "a code in a different branch of the same code system is not in it either",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-other-branch-request.json",
+        "response" : "tho/validate-isa-other-branch-response.json"
+      },
+      {
+        "name" : "validate-descendent-of-self",
+        "description" : "descendent-of excludes the code named in the filter - the one thing that distinguishes it from is-a",
+        "operation" : "validate-code",
+        "request" : "tho/validate-descendent-of-self-request.json",
+        "response" : "tho/validate-descendent-of-self-response.json"
+      },
+      {
+        "name" : "validate-descendent-of-child",
+        "description" : "everything below the filter code is in it, exactly as for is-a",
+        "operation" : "validate-code",
+        "request" : "tho/validate-descendent-of-child-request.json",
+        "response" : "tho/validate-descendent-of-child-response.json"
+      },
+      {
+        "name" : "validate-descendent-of-deep",
+        "description" : "including the deep descendants",
+        "operation" : "validate-code",
+        "request" : "tho/validate-descendent-of-deep-request.json",
+        "response" : "tho/validate-descendent-of-deep-response.json"
+      },
+      {
+        "name" : "validate-isnota-self",
+        "description" : "is-not-a excludes the code named in the filter as well as its descendants",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isnota-self-request.json",
+        "response" : "tho/validate-isnota-self-response.json"
+      },
+      {
+        "name" : "validate-isnota-descendant",
+        "description" : "a deep descendant of the filter code is excluded too, not just the direct children",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isnota-descendant-request.json",
+        "response" : "tho/validate-isnota-descendant-response.json"
+      },
+      {
+        "name" : "validate-isnota-parent",
+        "description" : "the code above the filter code is in an is-not-a value set",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isnota-parent-request.json",
+        "response" : "tho/validate-isnota-parent-response.json"
+      },
+      {
+        "name" : "validate-isnota-other-branch",
+        "description" : "and so is a code in a different branch",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isnota-other-branch-request.json",
+        "response" : "tho/validate-isnota-other-branch-response.json"
+      },
+      {
+        "name" : "validate-child-of-child",
+        "description" : "child-of picks up a direct child, which act-class states in a subsumedBy property rather than by nesting",
+        "operation" : "validate-code",
+        "request" : "tho/validate-child-of-child-request.json",
+        "response" : "tho/validate-child-of-child-response.json"
+      },
+      {
+        "name" : "validate-child-of-self",
+        "description" : "child-of does not include the code named in the filter, unlike is-a",
+        "operation" : "validate-code",
+        "request" : "tho/validate-child-of-self-request.json",
+        "response" : "tho/validate-child-of-self-response.json"
+      },
+      {
+        "name" : "validate-child-of-grandchild",
+        "description" : "and it stops at the direct children, which is what separates it from descendent-of",
+        "operation" : "validate-code",
+        "request" : "tho/validate-child-of-grandchild-request.json",
+        "response" : "tho/validate-child-of-grandchild-response.json"
+      },
+      {
+        "name" : "validate-isa-second-parent",
+        "description" : "ENTRY is in an is-a on _ActContainer, the second of its two subsumedBy parents - a relationship nesting cannot express",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-second-parent-request.json",
+        "response" : "tho/validate-isa-second-parent-response.json"
+      },
+      {
+        "name" : "validate-isa-second-parent-out",
+        "description" : "a code under the other container is not in it",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-second-parent-out-request.json",
+        "response" : "tho/validate-isa-second-parent-out-response.json"
+      },
+      {
+        "name" : "validate-isa-unknown-code",
+        "description" : "a code that is not in the code system at all, validated against a filtered value set",
+        "operation" : "validate-code",
+        "request" : "tho/validate-isa-unknown-code-request.json",
+        "response" : "tho/validate-isa-unknown-code-response.json"
       }
     ]
   },{
@@ -4590,20 +5285,65 @@
         "operation" : "translate",
         "request" : "tx.fhir.org/snomed-translate-request.json",
         "response" : "tx.fhir.org/snomed-translate-response.json"
+      },
+      {
+        "name" : "loinc-subsumes-equivalent",
+        "description" : "A LOINC code is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "tx.fhir.org/loinc-subsumes-equivalent-request-parameters.json",
+        "response" : "tx.fhir.org/loinc-subsumes-equivalent-response-parameters.json"
+      },
+      {
+        "name" : "loinc-subsumes-parent",
+        "description" : "A LOINC part subsumes a code beneath it in the multiaxial hierarchy",
+        "operation" : "subsumes",
+        "request" : "tx.fhir.org/loinc-subsumes-parent-request-parameters.json",
+        "response" : "tx.fhir.org/loinc-subsumes-parent-response-parameters.json"
+      },
+      {
+        "name" : "loinc-subsumes-child",
+        "description" : "the mirror of loinc-subsumes-parent",
+        "operation" : "subsumes",
+        "request" : "tx.fhir.org/loinc-subsumes-child-request-parameters.json",
+        "response" : "tx.fhir.org/loinc-subsumes-child-response-parameters.json"
+      },
+      {
+        "name" : "loinc-subsumes-unrelated",
+        "description" : "Two unrelated LOINC codes",
+        "operation" : "subsumes",
+        "request" : "tx.fhir.org/loinc-subsumes-unrelated-request-parameters.json",
+        "response" : "tx.fhir.org/loinc-subsumes-unrelated-response-parameters.json"
+      },
+      {
+        "name" : "loinc-subsumes-unknown-code",
+        "description" : "codeA is not a LOINC code",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "tx.fhir.org/loinc-subsumes-unknown-code-request-parameters.json",
+        "response" : "tx.fhir.org/loinc-subsumes-unknown-code-response-parameters.json"
       }
     ]
   },{
     "name" : "snomed",
     "mode" : "snomed",
-    "description" : "This snomed tests are based on the subset distributed with the tx-ecosystem IG",
+    "description" : "This snomed tests are based on the testing subset in the tx-ecosystem IG github repo (see /tx-source)",
     "setup" : [ "sct/valueset-inactive.json", "sct/valueset-pc-none.json", "sct/valueset-pc-list.json", "sct/valueset-pc-list-no-pc.json", "sct/valueset-pc-filter.json" ],
     "tests" : [
       {
-        "name" : "snomed-inactive-display",
+        "name" : "snomed-inactive-display-lenient",
         "description" : "check that inactive displays are validated properly",
         "operation" : "cs-validate-code",
+        "lenient-display" : true,
         "request" : "sct/validate-code-inactive-display-request.json",
-        "response" : "sct/validate-code-inactive-display-response.json"
+        "response" : "sct/validate-code-inactive-display-lenient-response.json"
+      },
+      {
+        "name" : "snomed-inactive-display-notlenient",
+        "description" : "check that inactive displays are validated properly",
+        "operation" : "cs-validate-code",
+        "lenient-display" : false,
+        "request" : "sct/validate-code-inactive-display-request.json",
+        "response" : "sct/validate-code-inactive-display-not-lenient-response.json"
       },
       {
         "name" : "snomed-isa-in",
@@ -4663,6 +5403,14 @@
         "response" : "sct/lookup-procedure-pc-response.json"
       },
       {
+        "name" : "lookup-pc-unbracketed",
+        "description" : "An attribute value that is itself refined must be bracketed in the compositional grammar (405813007=(85562004:272741003=24028007)); without the brackets the expression is invalid, and $lookup fails",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "sct/lookup-procedure-pc-unbracketed-request.json",
+        "response" : "sct/lookup-procedure-pc-unbracketed-response.json"
+      },
+      {
         "name" : "validate-code-pc-good",
         "description" : "Tests the $validate-code operation for a complex SCT expression",
         "operation" : "cs-validate-code",
@@ -4682,6 +5430,125 @@
         "operation" : "cs-validate-code",
         "request" : "sct/validate-code-procedure-pc-bad2-request.json",
         "response" : "sct/validate-code-procedure-pc-bad2-response.json"
+      },
+      {
+        "name" : "validate-code-pc-nested-good",
+        "description" : "Tests the $validate-code operation for an expression whose attribute value is itself refined - right hand as the procedure site",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-nested-good-request.json",
+        "response" : "sct/validate-code-pc-nested-good-response.json"
+      },
+      {
+        "name" : "validate-code-pc-unbracketed",
+        "description" : "As validate-code-pc-nested-good, but without the brackets the compositional grammar requires around a refined attribute value - so it is not a valid expression",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-unbracketed-request.json",
+        "response" : "sct/validate-code-pc-unbracketed-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-lateralizable",
+        "description" : "The concept model does not allow laterality on a body structure that is not in the lateralizable body structure reference set",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-lateralizable-request.json",
+        "response" : "sct/validate-code-pc-mrcm-lateralizable-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-domain",
+        "description" : "The concept model does not allow an attribute outside its domain - finding site on a body structure",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-domain-request.json",
+        "response" : "sct/validate-code-pc-mrcm-domain-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-domain-finding",
+        "description" : "An attribute with more than one domain in the concept model is valid in any of them - due to on a clinical finding (due to is also valid on an event)",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-domain-finding-request.json",
+        "response" : "sct/validate-code-pc-mrcm-domain-finding-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-domain-event",
+        "description" : "An attribute with more than one domain in the concept model is valid in any of them - due to on an event (due to is also valid on a clinical finding)",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-domain-event-request.json",
+        "response" : "sct/validate-code-pc-mrcm-domain-event-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-domain-multi",
+        "description" : "The concept model does not allow an attribute outside all of its domains - due to on a procedure, when it is only valid on a clinical finding or an event",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-domain-multi-request.json",
+        "response" : "sct/validate-code-pc-mrcm-domain-multi-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-range",
+        "description" : "The concept model does not allow a value outside the attribute's range - a body structure as the value of laterality",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-range-request.json",
+        "response" : "sct/validate-code-pc-mrcm-range-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-cardinality",
+        "description" : "The concept model does not allow an attribute more times than its cardinality - laterality is 0..1",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-cardinality-request.json",
+        "response" : "sct/validate-code-pc-mrcm-cardinality-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-grouped",
+        "description" : "The concept model does not allow an ungrouped attribute inside a relationship group - laterality is ungrouped",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-grouped-request.json",
+        "response" : "sct/validate-code-pc-mrcm-grouped-response.json"
+      },
+      {
+        "name" : "validate-code-pc-concrete-good",
+        "description" : "Tests the $validate-code operation for an expression with a concrete value",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-concrete-good-request.json",
+        "response" : "sct/validate-code-pc-concrete-good-response.json"
+      },
+      {
+        "name" : "validate-code-pc-scg-no-comma",
+        "description" : "The comma before an attribute group is optional in the compositional grammar, so an attribute set followed directly by a group has to be accepted - it normalises to the form with the comma",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-scg-no-comma-request.json",
+        "response" : "sct/validate-code-pc-scg-no-comma-response.json"
+      },
+      {
+        "name" : "validate-code-pc-scg-comma",
+        "description" : "The same expression written with the optional comma is already the normal form, so it validates with no issues",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-scg-comma-request.json",
+        "response" : "sct/validate-code-pc-scg-comma-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-concrete-range",
+        "description" : "The concept model does not allow a concrete value outside the attribute's range - the value must be greater than zero",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-concrete-range-request.json",
+        "response" : "sct/validate-code-pc-mrcm-concrete-range-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-concrete-int",
+        "description" : "The concept model does not allow a decimal where the attribute's range is an integer",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-concrete-int-request.json",
+        "response" : "sct/validate-code-pc-mrcm-concrete-int-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-concrete-wanted",
+        "description" : "The concept model does not allow a concept where the attribute's range is a concrete value",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-concrete-wanted-request.json",
+        "response" : "sct/validate-code-pc-mrcm-concrete-wanted-response.json"
+      },
+      {
+        "name" : "validate-code-pc-mrcm-concept-wanted",
+        "description" : "The concept model does not allow a concrete value where the attribute's range is a concept",
+        "operation" : "cs-validate-code",
+        "request" : "sct/validate-code-pc-mrcm-concept-wanted-request.json",
+        "response" : "sct/validate-code-pc-mrcm-concept-wanted-response.json"
       },
       {
         "name" : "validate-code-pc-none",
@@ -4761,6 +5628,225 @@
         "http-code" : "4xx",
         "request" : "sct/validate-code-implied-2b-request.json",
         "response" : "sct/validate-code-implied-2b-response.json"
+      },
+      {
+        "name" : "subsumes-simple",
+        "description" : "A code is subsumed by its stated parent",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-simple-request.json",
+        "response" : "sct/subsumes-simple-response.json"
+      },
+      {
+        "name" : "subsumes-parent",
+        "description" : "A code subsumes its stated child",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-parent-request.json",
+        "response" : "sct/subsumes-parent-response.json"
+      },
+      {
+        "name" : "subsumes-equivalent",
+        "description" : "A code is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-equivalent-request.json",
+        "response" : "sct/subsumes-equivalent-response.json"
+      },
+      {
+        "name" : "subsumes-transitive",
+        "description" : "Subsumption is transitive - a code subsumes a distant descendant",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-transitive-request.json",
+        "response" : "sct/subsumes-transitive-response.json"
+      },
+      {
+        "name" : "subsumes-siblings",
+        "description" : "Two sibling codes do not subsume each other",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-siblings-request.json",
+        "response" : "sct/subsumes-siblings-response.json"
+      },
+      {
+        "name" : "subsumes-disjoint",
+        "description" : "Two codes in different top level hierarchies do not subsume each other",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-disjoint-request.json",
+        "response" : "sct/subsumes-disjoint-response.json"
+      },
+      {
+        "name" : "subsumes-coding",
+        "description" : "Subsumption using codingA/codingB instead of system + codeA/codeB",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-coding-request.json",
+        "response" : "sct/subsumes-coding-response.json"
+      },
+      {
+        "name" : "subsumes-unknown-code-a",
+        "description" : "codeA is a well formed SNOMED code that is not in this edition",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-unknown-code-a-request.json",
+        "response" : "sct/subsumes-unknown-code-a-response.json"
+      },
+      {
+        "name" : "subsumes-unknown-code-b",
+        "description" : "codeB is a well formed SNOMED code that is not in this edition",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-unknown-code-b-request.json",
+        "response" : "sct/subsumes-unknown-code-b-response.json"
+      },
+      {
+        "name" : "subsumes-invalid-code",
+        "description" : "codeA is not a valid SNOMED code at all",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-invalid-code-request.json",
+        "response" : "sct/subsumes-invalid-code-response.json"
+      },
+      {
+        "name" : "subsumes-bad-version",
+        "description" : "the version names a SNOMED edition the server does not have",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-bad-version-request.json",
+        "response" : "sct/subsumes-bad-version-response.json"
+      },
+      {
+        "name" : "subsumes-bad-system",
+        "description" : "the system is not a code system the server knows",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-bad-system-request.json",
+        "response" : "sct/subsumes-bad-system-response.json"
+      },
+      {
+        "name" : "subsumes-expr-refined-vs-parent",
+        "description" : "a refined expression is still subsumed by an ancestor of its focus concept",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-refined-vs-parent-request.json",
+        "response" : "sct/subsumes-expr-refined-vs-parent-response.json"
+      },
+      {
+        "name" : "subsumes-expr-parent-vs-refined",
+        "description" : "the mirror of subsumes-expr-refined-vs-parent",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-parent-vs-refined-request.json",
+        "response" : "sct/subsumes-expr-parent-vs-refined-response.json"
+      },
+      {
+        "name" : "subsumes-expr-vs-focus",
+        "description" : "a refined expression is subsumed by its own focus concept",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-vs-focus-request.json",
+        "response" : "sct/subsumes-expr-vs-focus-response.json"
+      },
+      {
+        "name" : "subsumes-expr-attr-value",
+        "description" : "same attribute, and the value in A subsumes the value in B",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-attr-value-request.json",
+        "response" : "sct/subsumes-expr-attr-value-response.json"
+      },
+      {
+        "name" : "subsumes-expr-attr-value-reverse",
+        "description" : "the mirror of subsumes-expr-attr-value",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-attr-value-reverse-request.json",
+        "response" : "sct/subsumes-expr-attr-value-reverse-response.json"
+      },
+      {
+        "name" : "subsumes-expr-attr-unrelated",
+        "description" : "same attribute, unrelated values: structure finds nothing, which does not establish that nothing is there",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-expr-attr-unrelated-request.json",
+        "response" : "sct/subsumes-expr-attr-unrelated-response.json"
+      },
+      {
+        "name" : "subsumes-expr-extra-attribute",
+        "description" : "B carries every attribute A does, and one more",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-extra-attribute-request.json",
+        "response" : "sct/subsumes-expr-extra-attribute-response.json"
+      },
+      {
+        "name" : "subsumes-expr-different-attributes",
+        "description" : "each expression refines an attribute the other does not: no structural relationship either way, and no proof that none exists",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-expr-different-attributes-request.json",
+        "response" : "sct/subsumes-expr-different-attributes-response.json"
+      },
+      {
+        "name" : "subsumes-expr-primitive-focus",
+        "description" : "an expression against a PRIMITIVE concept whose entailed attributes satisfy it - the attributes are necessary conditions, so they count",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-primitive-focus-request.json",
+        "response" : "sct/subsumes-expr-primitive-focus-response.json"
+      },
+      {
+        "name" : "subsumes-expr-normal-form",
+        "description" : "a concept against its own long normal form written out",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-normal-form-request.json",
+        "response" : "sct/subsumes-expr-normal-form-response.json"
+      },
+      {
+        "name" : "subsumes-expr-redundant-refinement",
+        "description" : "a refinement that restates the concept's own definition",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-redundant-refinement-request.json",
+        "response" : "sct/subsumes-expr-redundant-refinement-response.json"
+      },
+      {
+        "name" : "subsumes-expr-grouped-ungrouped",
+        "description" : "the same attribute grouped and ungrouped: the MRCM requires |Finding site| to be grouped, so the ungrouped form is not a valid expression",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-expr-grouped-ungrouped-request.json",
+        "response" : "sct/subsumes-expr-grouped-ungrouped-response.json"
+      },
+      {
+        "name" : "subsumes-expr-ungrouped-morphology",
+        "description" : "the grouping rule is not specific to |Finding site|: |Associated morphology| is grouped too",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "sct/subsumes-expr-ungrouped-morphology-request.json",
+        "response" : "sct/subsumes-expr-ungrouped-morphology-response.json"
+      },
+      {
+        "name" : "subsumes-expr-ungrouped-laterality",
+        "description" : "|Laterality| is ungrouped in the MRCM, so writing it outside a group is correct and subsumption proceeds",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-ungrouped-laterality-request.json",
+        "response" : "sct/subsumes-expr-ungrouped-laterality-response.json"
+      },
+      {
+        "name" : "subsumes-expr-with-terms",
+        "description" : "the same expression with and without terms",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-with-terms-request.json",
+        "response" : "sct/subsumes-expr-with-terms-response.json"
+      },
+      {
+        "name" : "subsumes-expr-conjunction",
+        "description" : "a conjunction of a concept with its own ancestor",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-conjunction-request.json",
+        "response" : "sct/subsumes-expr-conjunction-response.json"
+      },
+      {
+        "name" : "subsumes-expr-precoordinated-match",
+        "description" : "an expression that means exactly the same as a precoordinated concept",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-precoordinated-match-request.json",
+        "response" : "sct/subsumes-expr-precoordinated-match-response.json"
+      },
+      {
+        "name" : "subsumes-expr-subsumes-precoordinated",
+        "description" : "a post-coordinated expression subsuming a precoordinated concept",
+        "operation" : "subsumes",
+        "request" : "sct/subsumes-expr-subsumes-precoordinated-request.json",
+        "response" : "sct/subsumes-expr-subsumes-precoordinated-response.json"
       }
     ]
   },{
@@ -5777,6 +6863,377 @@
         "operation" : "validate-code",
         "request" : "ucum/validate-ucum-all-bad-request.json",
         "response" : "ucum/validate-ucum-all-bad-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-equivalent",
+        "description" : "A unit is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-equivalent-request.json",
+        "response" : "ucum/ucum-subsumes-equivalent-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-canonical",
+        "description" : "The same unit written two different ways",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-canonical-request.json",
+        "response" : "ucum/ucum-subsumes-canonical-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-unrelated",
+        "description" : "Two unrelated units",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-unrelated-request.json",
+        "response" : "ucum/ucum-subsumes-unrelated-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-scaled",
+        "description" : "A unit and a scaled version of it - UCUM has no hierarchy",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-scaled-request.json",
+        "response" : "ucum/ucum-subsumes-scaled-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-invalid-code",
+        "description" : "codeA is not a valid UCUM unit",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "ucum/ucum-subsumes-invalid-code-request.json",
+        "response" : "ucum/ucum-subsumes-invalid-code-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-annotation",
+        "description" : "A unit with an annotation, and the same unit without",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-annotation-request.json",
+        "response" : "ucum/ucum-subsumes-annotation-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-derived",
+        "description" : "A named derived unit and the expression it is defined as",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-derived-request.json",
+        "response" : "ucum/ucum-subsumes-derived-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-offset",
+        "description" : "Two units of the same property whose conversion has an offset",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-offset-request.json",
+        "response" : "ucum/ucum-subsumes-offset-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-same-canonical",
+        "description" : "Two units with the same canonical unit but different magnitudes",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-same-canonical-request.json",
+        "response" : "ucum/ucum-subsumes-same-canonical-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-both-scaled",
+        "description" : "The same canonical unit again, with neither magnitude being 1",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-both-scaled-request.json",
+        "response" : "ucum/ucum-subsumes-both-scaled-response.json"
+      },
+      {
+        "name" : "ucum-subsumes-dimensionless",
+        "description" : "Two dimensionless units, told apart only by magnitude",
+        "operation" : "subsumes",
+        "request" : "ucum/ucum-subsumes-dimensionless-request.json",
+        "response" : "ucum/ucum-subsumes-dimensionless-response.json"
+      }
+    ]
+  },{
+    "name" : "mimetypes",
+    "mode" : "mimetypes",
+    "description" : "Tests for the mime types code system (BCP 13). Type and subtype have no hierarchy, but parameters narrow a media type, and the base filter selects by type or type/subtype",
+    "setup" : [ "mimetypes/valueset-base-type.json", "mimetypes/valueset-base-subtype.json", "mimetypes/valueset-registered.json", "mimetypes/valueset-unregistered.json", "mimetypes/valueset-enumerated.json", "mimetypes/valueset-all.json", "mimetypes/valueset-registered-narrow.json" ],
+    "tests" : [
+      {
+        "name" : "mimetype-subsumes-equivalent",
+        "description" : "A media type is equivalent to itself",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-equivalent-request.json",
+        "response" : "mimetypes/mimetype-subsumes-equivalent-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-unrelated",
+        "description" : "Two unrelated media types",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-unrelated-request.json",
+        "response" : "mimetypes/mimetype-subsumes-unrelated-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-suffix",
+        "description" : "A media type and one with a structured suffix of it",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-suffix-request.json",
+        "response" : "mimetypes/mimetype-subsumes-suffix-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-parameter",
+        "description" : "A media type and the same type carrying a parameter",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-parameter-request.json",
+        "response" : "mimetypes/mimetype-subsumes-parameter-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-parameter-reverse",
+        "description" : "the mirror of mimetype-subsumes-parameter",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-parameter-reverse-request.json",
+        "response" : "mimetypes/mimetype-subsumes-parameter-reverse-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-parameter-siblings",
+        "description" : "The same parameter with two different values",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-parameter-siblings-request.json",
+        "response" : "mimetypes/mimetype-subsumes-parameter-siblings-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-parameter-added",
+        "description" : "A parameter set and a superset of it",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-parameter-added-request.json",
+        "response" : "mimetypes/mimetype-subsumes-parameter-added-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-parameter-disjoint",
+        "description" : "Two parameter sets, neither containing the other",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-parameter-disjoint-request.json",
+        "response" : "mimetypes/mimetype-subsumes-parameter-disjoint-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-default-explicit",
+        "description" : "a parameter written out at its default value: RFC 6657 section 4 keeps US-ASCII as the default charset for text/plain, so the bare form already carries it and the two codes are the same media type",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-default-explicit-request.json",
+        "response" : "mimetypes/mimetype-subsumes-default-explicit-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-default-contradicted",
+        "description" : "a parameter away from its default: because bare text/plain means charset=us-ascii, a different charset contradicts it rather than narrowing it. This is where the rule that a parameter narrows does not hold",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-default-contradicted-request.json",
+        "response" : "mimetypes/mimetype-subsumes-default-contradicted-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-default-format",
+        "description" : "the same for format, which RFC 3676 section 4 defaults to Fixed, so text/plain and text/plain; format=flowed are different media types",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-default-format-request.json",
+        "response" : "mimetypes/mimetype-subsumes-default-format-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-charset-unknown-default",
+        "description" : "RFC 6657 section 3 leaves a text/* registration that does not say how the charset is determined defaulting to US-ASCII, so for such a type a server cannot tell whether the absence of a charset means any charset or means US-ASCII, and the two give opposite answers",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-subsumes-charset-unknown-default-request.json",
+        "response" : "mimetypes/mimetype-subsumes-charset-unknown-default-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-case",
+        "description" : "The same media type differing only in case and quoting",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-case-request.json",
+        "response" : "mimetypes/mimetype-subsumes-case-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-unknown-parameter",
+        "description" : "a parameter the server does not know: whether it narrows the media type depends on its definition, so the relationship cannot be determined",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-subsumes-unknown-parameter-request.json",
+        "response" : "mimetypes/mimetype-subsumes-unknown-parameter-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-unknown-parameter-value",
+        "description" : "two values of an unknown parameter: nothing says whether they exclude one another or one includes the other",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-subsumes-unknown-parameter-value-request.json",
+        "response" : "mimetypes/mimetype-subsumes-unknown-parameter-value-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-unknown-parameter-shared",
+        "description" : "an unknown parameter carried identically by both codes cannot affect the answer, so it must not stop the server deciding",
+        "operation" : "subsumes",
+        "request" : "mimetypes/mimetype-subsumes-unknown-parameter-shared-request.json",
+        "response" : "mimetypes/mimetype-subsumes-unknown-parameter-shared-response.json"
+      },
+      {
+        "name" : "mimetype-subsumes-invalid-code",
+        "description" : "codeA is not a well formed media type",
+        "operation" : "subsumes",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-subsumes-invalid-code-request.json",
+        "response" : "mimetypes/mimetype-subsumes-invalid-code-response.json"
+      },
+      {
+        "name" : "mimetype-filter-base-type-in",
+        "description" : "A code whose type matches a base filter of 'text'",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-type-in-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-type-in-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-type-params",
+        "description" : "Parameters do not stop a code matching the base filter",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-type-params-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-type-params-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-type-other-subtype",
+        "description" : "Any subtype of the type matches a type-only base filter",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-type-other-subtype-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-type-other-subtype-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-type-out",
+        "description" : "A code of a different type does not match",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-type-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-type-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-subtype-in",
+        "description" : "A code matching a base filter of 'text/plain'",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-subtype-in-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-subtype-in-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-subtype-params",
+        "description" : "Parameters do not stop a code matching a type/subtype base filter",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-subtype-params-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-subtype-params-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-base-subtype-out",
+        "description" : "A different subtype does not match a type/subtype base filter",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-base-subtype-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-base-subtype-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-registered-in",
+        "description" : "A media type that is in the IANA registry",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-registered-in-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-registered-in-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-registered-params",
+        "description" : "Parameters do not stop a registered type matching",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-registered-params-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-registered-params-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-registered-out",
+        "description" : "A media type that is not in the IANA registry",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-registered-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-registered-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-unregistered-in",
+        "description" : "registered=false selects a type that is not in the registry",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-unregistered-in-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-unregistered-in-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-unregistered-out",
+        "description" : "registered=false excludes a registered type",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-unregistered-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-unregistered-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-registered-params-out",
+        "description" : "A parameter does not make an unregistered type match registered=true",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-registered-params-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-registered-params-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-unregistered-params-in",
+        "description" : "An unregistered type with a parameter still matches registered=false",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-unregistered-params-in-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-unregistered-params-in-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-filter-unregistered-params-out",
+        "description" : "A parameter does not make a registered type match registered=false",
+        "operation" : "validate-code",
+        "request" : "mimetypes/mimetype-filter-unregistered-params-out-request-parameters.json",
+        "response" : "mimetypes/mimetype-filter-unregistered-params-out-response-parameters.json"
+      },
+      {
+        "name" : "mimetype-expand-enumerated",
+        "description" : "An enumerated list of media types expands",
+        "operation" : "expand",
+        "request" : "mimetypes/mimetype-expand-enumerated-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-enumerated-response-valueSet.json"
+      },
+      {
+        "name" : "mimetype-expand-all",
+        "description" : "The whole code system cannot be expanded",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-expand-all-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-all-response-outcome.json"
+      },
+      {
+        "name" : "mimetype-expand-base",
+        "description" : "A base filter cannot be expanded either",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-expand-base-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-base-response-outcome.json"
+      },
+      {
+        "name" : "mimetype-expand-unregistered",
+        "description" : "registered=false cannot be expanded - it is unbounded",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-expand-unregistered-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-unregistered-response-outcome.json"
+      },
+      {
+        "name" : "mimetype-expand-registered-narrow",
+        "description" : "registered=true can be expanded, narrowed by a base filter, and the expansion is marked unclosed",
+        "operation" : "expand",
+        "request" : "mimetypes/mimetype-expand-registered-narrow-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-registered-narrow-response-valueSet.json"
+      },
+      {
+        "explanation" : "registered=true is enumerable - the IANA registry is a finite list - but there are a couple of thousand entries, so expanding it without a count is too costly. As in big/expand-no-limit, the header tells a server with a higher internal limit to treat 1000 as its limit, so that every server exercises the same path",
+        "header" : {
+          "name" : "X-TOO-COSTLY-THRESHOLD",
+          "value" : "1000"
+        },
+        "name" : "mimetype-expand-registered-too-costly",
+        "description" : "Expanding every registered media type at once is too costly",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "mimetypes/mimetype-expand-registered-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-registered-response-outcome.json"
+      },
+      {
+        "name" : "mimetype-expand-registered-paged",
+        "description" : "A page of the registered media types, with the page size asserted rather than its contents",
+        "operation" : "expand",
+        "request" : "mimetypes/mimetype-expand-registered-paged-request-parameters.json",
+        "response" : "mimetypes/mimetype-expand-registered-paged-response-valueSet.json"
       }
     ]
   }, {
@@ -6161,7 +7618,7 @@
     "name" : "permutations",
     "mode" : "general",
     "description" : "A set of permutations generated by Claude with the goal of increasing test coverage.",
-    "setup" : ["simple/codesystem-simple.json",   "permutations/valueset-simple-all.json",  "permutations/valueset-simple-enumerated.json", "permutations/valueset-simple-exclude-filter.json",
+    "setup" : ["simple/codesystem-simple.json",   "simple/valueset-all.json",  "permutations/valueset-simple-enumerated-codes.json", "permutations/valueset-simple-exclude-filter.json",
                "permutations/valueset-simple-exclude-import.json", "permutations/valueset-simple-exclude-list.json", "permutations/valueset-simple-import.json", "permutations/valueset-simple-isa.json"],
     "tests" : [
       {
@@ -6504,14 +7961,368 @@
   },{
     "name" : "icd-11",
     "mode" : "icd-11",
-    "description" : "ICD-11 Test Cases",
-    "setup" : ["icd-11/vs1.json", "icd-11/vs2.json"],
+    "todo" : "capabilities and termcaps issues. Check parameters. check definitions, Code system in language, add a test for axis being plain wrong. research sub-properties on /Users/grahame/igs/tx-ecosystem-ig/tests/icd-11/lookup-pc-simple-response.json",
+    "description" : "ICD-11 Test Cases. See tests/icd-11/doco.txt for what these assert and why several of them are expected to fail against the current ICD-API.",
+    "setup" : ["icd-11/vs1.json", "icd-11/vs2.json", "icd-11/valueset-enumerated.json", "icd-11/valueset-enumerated-uri.json", "icd-11/valueset-isa.json", "icd-11/valueset-isa-uri.json", "icd-11/valueset-bad-code.json"],
     "tests" : [
       {
         "name" : "term-caps",
         "description" : "Check that the minimum expected things are found in the server TerminologyCapabilities for ICD-11 servers",
         "operation" : "term-caps",
         "response" : "icd-11/capterms.json"
+      },
+      {
+        "name" : "lookup-mms-code",
+        "description" : "Look up an MMS stem code by its short code, restricting the returned properties with the property parameter",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-code-request.json",
+        "response" : "icd-11/lookup-mms-code-response.json"
+      },
+      {
+        "name" : "lookup-mms-uri",
+        "description" : "The same concept addressed by its entity URI must give the same answer",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-uri-request.json",
+        "response" : "icd-11/lookup-mms-uri-response.json"
+      },
+      {
+        "name" : "lookup-mms-grouper",
+        "description" : "Look up a chapter (a grouper that does have a short code)",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-grouper-request.json",
+        "response" : "icd-11/lookup-mms-grouper-response.json"
+      },
+      {
+        "name" : "lookup-mms-no-code",
+        "description" : "A concept with an entity id but no short code must be marked not-selectable",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-no-code-request.json",
+        "response" : "icd-11/lookup-mms-no-code-response.json"
+      },
+      {
+        "name" : "lookup-mms-residual",
+        "description" : "Look up a residual category - the id is derived from the parent, the code ends in Y",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-residual-request.json",
+        "response" : "icd-11/lookup-mms-residual-response.json"
+      },
+      {
+        "name" : "lookup-mms-fr",
+        "description" : "Look up with displayLanguage - display and designations come back in French",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-mms-fr-request.json",
+        "response" : "icd-11/lookup-mms-fr-response.json"
+      },
+      {
+        "name" : "lookup-icf-code",
+        "description" : "The same foundation entity in ICF carries a different short code",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-icf-code-request.json",
+        "response" : "icd-11/lookup-icf-code-response.json"
+      },
+      {
+        "name" : "lookup-foundation",
+        "description" : "Look up a Foundation entity - full URI only, there are no short codes",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-foundation-request.json",
+        "response" : "icd-11/lookup-foundation-response.json"
+      },
+      {
+        "name" : "lookup-bad-code",
+        "description" : "An unknown code is an error",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-bad-code-request.json",
+        "response" : "icd-11/lookup-bad-code-response.json"
+      },
+      {
+        "name" : "lookup-bad-system",
+        "description" : "An unknown code system is an error",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-bad-system-request.json",
+        "response" : "icd-11/lookup-bad-system-response.json"
+      },
+      {
+        "name" : "lookup-bad-version",
+        "description" : "An unknown version is an error",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-bad-version-request.json",
+        "response" : "icd-11/lookup-bad-version-response.json"
+      },
+      {
+        "name" : "lookup-foundation-bare",
+        "description" : "A bare numeric id is not a Foundation code (WHO decision - the full URI is required)",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-foundation-bare-request.json",
+        "response" : "icd-11/lookup-foundation-bare-response.json"
+      },
+      {
+        "name" : "lookup-foundation-residual",
+        "description" : "Residual categories exist only in the linearizations, not in the Foundation",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-foundation-residual-request.json",
+        "response" : "icd-11/lookup-foundation-residual-response.json"
+      },
+      {
+        "name" : "lookup-bad-language",
+        "description" : "An unknown display language must be reported, not silently replaced by English",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-bad-language-request.json",
+        "response" : "icd-11/lookup-bad-language-response.json"
+      },
+      {
+        "name" : "lookup-pc-simple",
+        "description" : "Look up a postcoordinated expression in short-code form",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-pc-simple-request.json",
+        "response" : "icd-11/lookup-pc-simple-response.json"
+      },
+      {
+        "name" : "lookup-pc-uri-form",
+        "description" : "The same expression in entity-URI form (spaces around the delimiter) must give the same concept",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-pc-uri-form-request.json",
+        "response" : "icd-11/lookup-pc-uri-form-response.json"
+      },
+      {
+        "name" : "lookup-pc-cluster",
+        "description" : "A cluster expression: two stems joined by /, each with its own & extensions",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-pc-cluster-request.json",
+        "response" : "icd-11/lookup-pc-cluster-response.json"
+      },
+      {
+        "name" : "lookup-pc-repeated-value",
+        "description" : "A value repeated on two different axes must not be silently dropped - the code that comes back must be the code that was asked about",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-pc-repeated-value-request.json",
+        "response" : "icd-11/lookup-pc-repeated-value-response.json"
+      },
+      {
+        "name" : "lookup-pc-nondisjoint",
+        "description" : "Values on two axes drawing from overlapping value sets must each stay on their own axis",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-pc-nondisjoint-request.json",
+        "response" : "icd-11/lookup-pc-nondisjoint-response.json"
+      },
+      {
+        "name" : "lookup-pc-invalid-axis",
+        "description" : "A value that is on no suggested axis of the stem must say so, not just 'not found'",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-pc-invalid-axis-request.json",
+        "response" : "icd-11/lookup-pc-invalid-axis-response.json"
+      },
+      {
+        "name" : "lookup-pc-other",
+        "description" : "'Other' postcoordination: a value outside the stem's declared scales (unresolved - see doco.txt)",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-pc-other-request.json",
+        "response" : "icd-11/lookup-pc-other-response.json"
+      },
+      {
+        "name" : "lookup-icf-pc",
+        "description" : "ICF postcoordination - every property returned must actually carry a value",
+        "operation" : "lookup",
+        "request" : "icd-11/lookup-icf-pc-request.json",
+        "response" : "icd-11/lookup-icf-pc-response.json"
+      },
+      {
+        "name" : "lookup-icf-pc-old",
+        "description" : "The pre-2026 ICF postcoordination syntax is no longer valid",
+        "operation" : "lookup",
+        "http-code" : "4xx",
+        "request" : "icd-11/lookup-icf-pc-old-request.json",
+        "response" : "icd-11/lookup-icf-pc-old-response.json"
+      },
+      {
+        "name" : "cs-validate-good",
+        "description" : "Validate a good code with no display",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-good-request.json",
+        "response" : "icd-11/cs-validate-good-response.json"
+      },
+      {
+        "name" : "cs-validate-good-display",
+        "description" : "Validate a good code with the right display",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-good-display-request.json",
+        "response" : "icd-11/cs-validate-good-display-response.json"
+      },
+      {
+        "name" : "cs-validate-bad-display",
+        "description" : "A wrong display must come back with issues and a message, not a bare result=false",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-bad-display-request.json",
+        "response" : "icd-11/cs-validate-bad-display-response.json"
+      },
+      {
+        "name" : "cs-validate-bad-code",
+        "description" : "An unknown code must come back with issues and a message",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-bad-code-request.json",
+        "response" : "icd-11/cs-validate-bad-code-response.json"
+      },
+      {
+        "name" : "cs-validate-case",
+        "description" : "ICD-11 codes are case sensitive, so a lower case code is not a code (note that WHO declares caseSensitive=false, which is the part that is wrong)",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-case-request.json",
+        "response" : "icd-11/cs-validate-case-response.json"
+      },
+      {
+        "name" : "cs-validate-lang",
+        "description" : "A display that is right in another language is still wrong for the language that was asked for - the same as validation/simple-coding-bad-language",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-lang-request.json",
+        "response" : "icd-11/cs-validate-lang-response.json"
+      },
+      {
+        "name" : "cs-validate-pc",
+        "description" : "Validate a postcoordinated expression",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-pc-request.json",
+        "response" : "icd-11/cs-validate-pc-response.json"
+      },
+      {
+        "name" : "cs-validate-uri",
+        "description" : "Validate a code given in entity-URI form",
+        "operation" : "cs-validate-code",
+        "request" : "icd-11/cs-validate-uri-request.json",
+        "response" : "icd-11/cs-validate-uri-response.json"
+      },
+      {
+        "name" : "expand-pcs",
+        "description" : "Expand a WHO postcoordination scale value set",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-request.json",
+        "response" : "icd-11/expand-pcs-response.json"
+      },
+      {
+        "name" : "expand-pcs-count",
+        "description" : "count is declared in TerminologyCapabilities and must be honoured",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-count-request.json",
+        "response" : "icd-11/expand-pcs-count-response.json"
+      },
+      {
+        "name" : "expand-pcs-offset",
+        "description" : "offset is declared in TerminologyCapabilities and must be honoured",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-offset-request.json",
+        "response" : "icd-11/expand-pcs-offset-response.json"
+      },
+      {
+        "name" : "expand-pcs-filter",
+        "description" : "The text filter must be applied",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-filter-request.json",
+        "response" : "icd-11/expand-pcs-filter-response.json"
+      },
+      {
+        "name" : "expand-pcs-fr",
+        "description" : "displayLanguage is declared in TerminologyCapabilities and must be honoured",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-fr-request.json",
+        "response" : "icd-11/expand-pcs-fr-response.json"
+      },
+      {
+        "name" : "expand-bad-url",
+        "description" : "An unknown value set is an error",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "icd-11/expand-bad-url-request.json",
+        "response" : "icd-11/expand-bad-url-response.json"
+      },
+      {
+        "name" : "expand-inline-vs",
+        "description" : "A value set supplied inline on the request must be expanded",
+        "operation" : "expand",
+        "request" : "icd-11/expand-inline-vs-request.json",
+        "response" : "icd-11/expand-inline-vs-response.json"
+      },
+      {
+        "name" : "expand-adhoc-enum",
+        "description" : "Expand a client-supplied value set enumerating MMS codes",
+        "operation" : "expand",
+        "request" : "icd-11/expand-adhoc-enum-request.json",
+        "response" : "icd-11/expand-adhoc-enum-response.json"
+      },
+      {
+        "name" : "expand-adhoc-enum-uri",
+        "description" : "Expand a client-supplied value set enumerating entity URIs",
+        "operation" : "expand",
+        "request" : "icd-11/expand-adhoc-enum-uri-request.json",
+        "response" : "icd-11/expand-adhoc-enum-uri-response.json"
+      },
+      {
+        "name" : "expand-adhoc-isa",
+        "description" : "Expand a client-supplied is-a filter, filter value as a short code",
+        "operation" : "expand",
+        "request" : "icd-11/expand-adhoc-isa-request.json",
+        "response" : "icd-11/expand-adhoc-isa-response.json"
+      },
+      {
+        "name" : "expand-adhoc-isa-uri",
+        "description" : "Expand the same is-a filter with the filter value as an entity URI - must be identical",
+        "operation" : "expand",
+        "request" : "icd-11/expand-adhoc-isa-uri-request.json",
+        "response" : "icd-11/expand-adhoc-isa-uri-response.json"
+      },
+      {
+        "name" : "expand-adhoc-bad-code",
+        "description" : "A client-supplied value set naming a code that does not exist expands to the codes that do - the same as simple-expand-enum-bad and overload-expand-enum-bad",
+        "operation" : "expand",
+        "request" : "icd-11/expand-adhoc-bad-code-request.json",
+        "response" : "icd-11/expand-adhoc-bad-code-response.json"
+      },
+      {
+        "name" : "expand-pcs-uri-form",
+        "description" : "The WHO postcoordination scale as a client-supplied value set, filter values as entity URIs",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-uri-form-request.json",
+        "response" : "icd-11/expand-pcs-uri-form-response.json"
+      },
+      {
+        "name" : "expand-pcs-code-form",
+        "description" : "The same value set with filter values as short codes - must expand identically",
+        "operation" : "expand",
+        "request" : "icd-11/expand-pcs-code-form-request.json",
+        "response" : "icd-11/expand-pcs-code-form-response.json"
+      },
+      {
+        "name" : "vs-validate-in",
+        "description" : "A code that is in a WHO postcoordination scale value set",
+        "operation" : "validate-code",
+        "request" : "icd-11/vs-validate-in-request.json",
+        "response" : "icd-11/vs-validate-in-response.json"
+      },
+      {
+        "name" : "vs-validate-out",
+        "description" : "A code that is not in the value set must come back with issues and a message",
+        "operation" : "validate-code",
+        "request" : "icd-11/vs-validate-out-request.json",
+        "response" : "icd-11/vs-validate-out-response.json"
+      },
+      {
+        "name" : "vs-validate-adhoc",
+        "description" : "A code that is in a client-supplied value set",
+        "operation" : "validate-code",
+        "request" : "icd-11/vs-validate-adhoc-request.json",
+        "response" : "icd-11/vs-validate-adhoc-response.json"
+      },
+      {
+        "name" : "vs-validate-adhoc-out",
+        "description" : "A code that is not in a client-supplied value set",
+        "operation" : "validate-code",
+        "request" : "icd-11/vs-validate-adhoc-out-request.json",
+        "response" : "icd-11/vs-validate-adhoc-out-response.json"
       }
     ]
   },{
@@ -6796,8 +8607,306 @@
     "name" : "langcodes",
     "mode" : "tx.fhir.org",
     "description" : "IETF language code (BCP-47) test cases",
-    "setup" : [ "langcodes/valueset-langcodes-all.json" ],
+    "setup" : [ "langcodes/valueset-langcodes-all.json", "langcodes/valueset-langcodes-english.json",
+      "langcodes/valueset-langcodes-us.json", "langcodes/valueset-langcodes-en-us.json",
+      "langcodes/valueset-langcodes-latin.json" ],
     "tests" : [
+      {
+        "name" : "validate-lang-base",
+        "description" : "a bare language subtag is valid (en)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-base-request.json",
+        "response" : "langcodes/validate-lang-base-response.json"
+      },
+      {
+        "name" : "validate-lang-region",
+        "description" : "language plus an ISO 3166 region (en-US)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-region-request.json",
+        "response" : "langcodes/validate-lang-region-response.json"
+      },
+      {
+        "name" : "validate-lang-script",
+        "description" : "language plus a script (zh-Hans)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-script-request.json",
+        "response" : "langcodes/validate-lang-script-response.json"
+      },
+      {
+        "name" : "validate-lang-script-region",
+        "description" : "language, script and region together (zh-Hans-CN)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-script-region-request.json",
+        "response" : "langcodes/validate-lang-script-region-response.json"
+      },
+      {
+        "name" : "validate-lang-region-private",
+        "description" : "a region inside the QM..QZ private-use range - the registry writes those as a range rather than one entry per code (en-QM)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-region-private-request.json",
+        "response" : "langcodes/validate-lang-region-private-response.json"
+      },
+      {
+        "name" : "validate-lang-grandfathered",
+        "description" : "a grandfathered tag: registered whole, and it does not decompose into valid subtags (i-klingon)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-grandfathered-request.json",
+        "response" : "langcodes/validate-lang-grandfathered-response.json"
+      },
+      {
+        "name" : "validate-lang-base-bad",
+        "description" : "two letters that are not an allocated language (zz)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-base-bad-request.json",
+        "response" : "langcodes/validate-lang-base-bad-response.json"
+      },
+      {
+        "name" : "validate-lang-region-bad",
+        "description" : "two letters that are neither allocated nor inside a private-use range (en-AB)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-region-bad-request.json",
+        "response" : "langcodes/validate-lang-region-bad-response.json"
+      },
+      {
+        "name" : "validate-lang-script-bad",
+        "description" : "four letters that are not an allocated script (en-Abcd)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-script-bad-request.json",
+        "response" : "langcodes/validate-lang-script-bad-response.json"
+      },
+      {
+        "name" : "validate-lang-extlang-prefix-bad",
+        "description" : "the extlang cmn carries Prefix: zh in the registry, so it may not follow en (en-cmn)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-extlang-prefix-bad-request.json",
+        "response" : "langcodes/validate-lang-extlang-prefix-bad-response.json"
+      },
+      {
+        "name" : "validate-lang-variant-prefix-bad",
+        "description" : "the variant 1901 carries Prefix: de in the registry, so it may not follow en (en-1901)",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-variant-prefix-bad-request.json",
+        "response" : "langcodes/validate-lang-variant-prefix-bad-response.json"
+      },
+      {
+        "name" : "validate-lang-case-language",
+        "description" : "the language subtag written in the wrong case (EN): valid, because BCP 47 tags are case-insensitive, but the server returns normalized-code en and notes the difference",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-case-language-request.json",
+        "response" : "langcodes/validate-lang-case-language-response.json"
+      },
+      {
+        "name" : "validate-lang-case-region",
+        "description" : "the region subtag written in the wrong case (en-us): valid, because BCP 47 tags are case-insensitive, but the server returns normalized-code en-US and notes the difference",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-case-region-request.json",
+        "response" : "langcodes/validate-lang-case-region-response.json"
+      },
+      {
+        "name" : "validate-lang-case-all",
+        "description" : "every subtag written in the wrong case (ZH-hans-cn): valid, because BCP 47 tags are case-insensitive, but the server returns normalized-code zh-Hans-CN and notes the difference",
+        "operation" : "cs-validate-code",
+        "request" : "langcodes/validate-lang-case-all-request.json",
+        "response" : "langcodes/validate-lang-case-all-response.json"
+      },
+      {
+        "name" : "subsumes-lang-base-region",
+        "description" : "en subsumes en-US: a region added to a bare language",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-base-region-request.json",
+        "response" : "langcodes/subsumes-lang-base-region-response.json"
+      },
+      {
+        "name" : "subsumes-lang-reverse",
+        "description" : "en-US is subsumed by en",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-reverse-request.json",
+        "response" : "langcodes/subsumes-lang-reverse-response.json"
+      },
+      {
+        "name" : "subsumes-lang-equivalent",
+        "description" : "a tag against itself",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-equivalent-request.json",
+        "response" : "langcodes/subsumes-lang-equivalent-response.json"
+      },
+      {
+        "name" : "subsumes-lang-script",
+        "description" : "zh subsumes zh-Hans-CN: script and region added",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-script-request.json",
+        "response" : "langcodes/subsumes-lang-script-response.json"
+      },
+      {
+        "name" : "subsumes-lang-skipped-script",
+        "description" : "en-US subsumes en-Latn-US, though the added script sits between the two subtags en-US names - RFC 4647 extended filtering rather than basic",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-skipped-script-request.json",
+        "response" : "langcodes/subsumes-lang-skipped-script-response.json"
+      },
+      {
+        "name" : "subsumes-lang-variant",
+        "description" : "de subsumes de-1901: a variant added",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-variant-request.json",
+        "response" : "langcodes/subsumes-lang-variant-response.json"
+      },
+      {
+        "name" : "subsumes-lang-siblings",
+        "description" : "en-US and en-GB: two regions of one language, neither subsumes the other",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-siblings-request.json",
+        "response" : "langcodes/subsumes-lang-siblings-response.json"
+      },
+      {
+        "name" : "subsumes-lang-scripts",
+        "description" : "zh-Hant and zh-Hans-CN: different scripts",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-scripts-request.json",
+        "response" : "langcodes/subsumes-lang-scripts-response.json"
+      },
+      {
+        "name" : "subsumes-lang-crossed",
+        "description" : "en-Latn and en-US: each states something the other does not",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-crossed-request.json",
+        "response" : "langcodes/subsumes-lang-crossed-response.json"
+      },
+      {
+        "name" : "subsumes-lang-unrelated",
+        "description" : "en and fr: different languages",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-unrelated-request.json",
+        "response" : "langcodes/subsumes-lang-unrelated-response.json"
+      },
+      {
+        "name" : "subsumes-lang-case",
+        "description" : "EN subsumes en-us: BCP 47 tags are case-insensitive",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-case-request.json",
+        "response" : "langcodes/subsumes-lang-case-response.json"
+      },
+      {
+        "name" : "subsumes-lang-grandfathered",
+        "description" : "zh does not subsume zh-min-nan: a grandfathered tag is matched whole and has no components to compare",
+        "operation" : "subsumes",
+        "request" : "langcodes/subsumes-lang-grandfathered-request.json",
+        "response" : "langcodes/subsumes-lang-grandfathered-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-language-in",
+        "description" : "a code in a language=en filter",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-language-in-request.json",
+        "response" : "langcodes/validate-lang-filter-language-in-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-language-out",
+        "description" : "a code with a different language",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-language-out-request.json",
+        "response" : "langcodes/validate-lang-filter-language-out-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-region-in",
+        "description" : "a code in a region=US filter, whatever its language",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-region-in-request.json",
+        "response" : "langcodes/validate-lang-filter-region-in-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-region-out",
+        "description" : "a code with a different region",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-region-out-request.json",
+        "response" : "langcodes/validate-lang-filter-region-out-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-both-in",
+        "description" : "language and region both fixed: the script is free to vary",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-both-in-request.json",
+        "response" : "langcodes/validate-lang-filter-both-in-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-both-out",
+        "description" : "the language matches but the region does not, and the message says which rule failed",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-both-out-request.json",
+        "response" : "langcodes/validate-lang-filter-both-out-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-script-in",
+        "description" : "a script filter validates codes even though it cannot be expanded",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-script-in-request.json",
+        "response" : "langcodes/validate-lang-filter-script-in-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-script-out",
+        "description" : "a code in a different script",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-script-out-request.json",
+        "response" : "langcodes/validate-lang-filter-script-out-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-language-bare",
+        "description" : "the bare language itself is in a language=en filter: a language filter matches the language, however much or little else the tag says",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-language-bare-request.json",
+        "response" : "langcodes/validate-lang-filter-language-bare-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-region-absent",
+        "description" : "a tag with no region at all is not in a region=US filter: an absent component does not match a fixed one",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-region-absent-request.json",
+        "response" : "langcodes/validate-lang-filter-region-absent-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-script-absent",
+        "description" : "a tag with no script at all is not in a script=Latn filter, even though Latn is the script English is written in",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-script-absent-request.json",
+        "response" : "langcodes/validate-lang-filter-script-absent-response.json"
+      },
+      {
+        "name" : "validate-lang-filter-both-absent",
+        "description" : "the language matches but there is no region to match, so the code is not in the value set",
+        "operation" : "validate-code",
+        "request" : "langcodes/validate-lang-filter-both-absent-request.json",
+        "response" : "langcodes/validate-lang-filter-both-absent-response.json"
+      },
+      {
+        "name" : "expand-lang-language",
+        "description" : "a fixed language expands to its regions (and the bare language), paged",
+        "operation" : "expand",
+        "request" : "langcodes/expand-lang-language-request.json",
+        "response" : "langcodes/expand-lang-language-response.json"
+      },
+      {
+        "name" : "expand-lang-both",
+        "description" : "language and region fixed expands to the scripts, starting with the tag that has none",
+        "operation" : "expand",
+        "request" : "langcodes/expand-lang-both-request.json",
+        "response" : "langcodes/expand-lang-both-response.json"
+      },
+      {
+        "name" : "expand-lang-region",
+        "description" : "a fixed region is finite but far too large to expand, so it answers too-costly",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "langcodes/expand-lang-region-request.json",
+        "response" : "langcodes/expand-lang-region-response.json"
+      },
+      {
+        "name" : "expand-lang-script",
+        "description" : "a script alone leaves the language open, so there is nothing to enumerate",
+        "operation" : "expand",
+        "http-code" : "4xx",
+        "request" : "langcodes/expand-lang-script-request.json",
+        "response" : "langcodes/expand-lang-script-response.json"
+      },
       {
         "name" : "expand-langcodes-all",
         "description" : "Tests the $expand operation for all language codes (a special case): the grammar is unbounded, so the common-languages base value set is returned, marked as an incomplete (unclosed) expansion",

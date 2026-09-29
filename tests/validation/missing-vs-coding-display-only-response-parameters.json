@@ -1,0 +1,36 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+      "name" : "issues",
+      "resource" : {
+        "resourceType" : "OperationOutcome",
+        "issue" : [{
+            "extension" : [{
+                "$optional$" : "!tx.fhir.org",
+                "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+                "valueString" : "Coding_has_no_system_or_code__cannot_validate"
+              }],
+            "severity" : "warning",
+            "code" : "invalid",
+            "details" : {
+              "coding" : [{
+                  "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+                  "code" : "invalid-data"
+                }],
+              "text" : "Coding has neither a system nor a code, so it cannot be validated. A system and a code should be provided"
+            },
+            "expression" : [
+              "Coding"
+            ]
+          }]
+      }
+    },
+    {
+      "name" : "message",
+      "valueString" : "$external:1:cannot be validated$"
+    },
+    {
+      "name" : "result",
+      "valueBoolean" : false
+    }]
+}

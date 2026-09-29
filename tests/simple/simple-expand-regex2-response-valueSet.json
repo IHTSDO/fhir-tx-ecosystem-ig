@@ -36,7 +36,6 @@
       "valueUri" : "http://hl7.org/fhir/test/CodeSystem/simple|0.1.0"
     }],
     "property" : [{
-        "$optional$" : true,
       "code" : "status",
       "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
@@ -52,7 +51,6 @@
       "code" : "code2",
       "display" : "Display 2",
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }]

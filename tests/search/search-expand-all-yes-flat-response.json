@@ -1,0 +1,44 @@
+{
+  "$optional-properties$" : ["id", "date", "publisher", "compose"],
+  "resourceType" : "ValueSet",
+  "id" : "$id$",
+  "url" : "http://hl7.org/fhir/test/ValueSet/search-all",
+  "version" : "6.0.0",
+  "name" : "SearchAllTest",
+  "status" : "draft",
+  "expansion" : {
+    "$optional-properties$" : ["id", "offset", "total"],
+    "id" : "$id$",
+    "identifier" : "$uuid$",
+    "timestamp" : "$instant$",
+    "total": 4,
+    "parameter" : [{
+      "name" : "filter",
+      "valueString" : "data"
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://hl7.org/fhir/test/CodeSystem/search"
+    }],
+    "contains" : [{
+      "system" : "http://hl7.org/fhir/test/CodeSystem/search",
+      "code" : "data-exchange",
+      "display" : "Data Exchange"
+    },
+    {
+      "system" : "http://hl7.org/fhir/test/CodeSystem/search",
+      "code" : "data-exchange1",
+      "display" : "Data Exchange1"
+    },
+    {
+      "system" : "http://hl7.org/fhir/test/CodeSystem/search",
+      "code" : "data-exchange2",
+      "display" : "Data Exchange2"
+    },
+    {
+      "system" : "http://hl7.org/fhir/test/CodeSystem/search",
+      "code" : "data-exchange3",
+      "display" : "Data Exchange3"
+    }]
+  }
+}

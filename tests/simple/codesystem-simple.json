@@ -18,6 +18,12 @@
   "hierarchyMeaning" : "is-a",
   "content" : "complete",
   "property" : [{
+    "code" : "dup",
+    "uri" : "http://hl7.org/fhir/test/CodeSystem/properties#dup",
+    "description" : "A property a concept may carry more than one value for",
+    "type" : "code"
+  },
+  {
     "code" : "prop",
     "uri" : "http://hl7.org/fhir/test/CodeSystem/properties#prop",
     "type" : "code"
@@ -125,6 +131,14 @@
     "property" : [{
       "code" : "prop",
       "valueCode" : "old"
+    },
+    {
+      "code" : "dup",
+      "valueCode" : "alpha"
+    },
+    {
+      "code" : "dup",
+      "valueCode" : "beta"
     }]
   }]
 }

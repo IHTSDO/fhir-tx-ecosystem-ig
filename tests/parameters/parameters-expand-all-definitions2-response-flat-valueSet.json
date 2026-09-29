@@ -37,6 +37,10 @@
     "property" : [{
       "code" : "definition",
       "uri" : "http://hl7.org/fhir/concept-properties#definition"
+    },
+    {
+      "code" : "status",
+      "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
     "contains" : [{
       "system" : "http://hl7.org/fhir/test/CodeSystem/simple",
@@ -70,6 +74,10 @@
       "property" : [{
         "code" : "definition",
         "valueString" : "My second code, with children"
+      },
+      {
+        "code" : "status",
+        "valueCode" : "retired"
       }] 
     }, {
       "system" : "http://hl7.org/fhir/test/CodeSystem/simple",

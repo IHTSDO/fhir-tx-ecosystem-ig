@@ -35,7 +35,6 @@
       "valueUri" : "http://hl7.org/fhir/test/CodeSystem/simple|0.1.0"
     }],
     "property" : [{
-      "$optional$" : true,
       "code" : "status",
       "uri" : "http://hl7.org/fhir/concept-properties#status"
     }],
@@ -65,7 +64,6 @@
         "value" : "mine own second code"
       }],
       "property" : [{
-        "$optional$" : true,
         "code" : "status",
         "valueCode" : "retired"
       }],

@@ -3,7 +3,7 @@
   "parameter": [
     {
       "name": "url",
-      "valueUri": "http://hl7.org/fhir/test/ValueSet/simple-enumerated"
+      "valueUri": "http://hl7.org/fhir/test/ValueSet/simple-enumerated-codes"
     },
     {
       "name": "system",

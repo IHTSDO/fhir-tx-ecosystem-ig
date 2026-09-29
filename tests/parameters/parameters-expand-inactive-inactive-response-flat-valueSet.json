@@ -34,6 +34,10 @@
       "name" : "used-codesystem",
       "valueUri" : "http://hl7.org/fhir/test/CodeSystem/simple|0.1.0"
     }],
+    "property" : [{
+      "code" : "status",
+      "uri" : "http://hl7.org/fhir/concept-properties#status"
+    }],
     "contains" : [{
       "system" : "http://hl7.org/fhir/test/CodeSystem/simple",
       "code" : "code1",
@@ -44,7 +48,11 @@
       "abstract" : true,
       "inactive" : true,
       "code" : "code2",
-      "display" : "Display 2"
+      "display" : "Display 2",
+      "property" : [{
+        "code" : "status",
+        "valueCode" : "retired"
+      }]
     },
     {
       "system" : "http://hl7.org/fhir/test/CodeSystem/simple",

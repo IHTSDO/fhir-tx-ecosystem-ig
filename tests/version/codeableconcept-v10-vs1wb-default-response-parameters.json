@@ -20,6 +20,7 @@
     "resource" : {
       "resourceType" : "OperationOutcome",
       "issue" : [{
+        "$optional-properties$" : ["location"],
         "extension" : [{
           "$optional$" : "!tx.fhir.org",
           "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
@@ -38,6 +39,7 @@
         "expression" : ["CodeableConcept.coding[0].version"]
       },
       {
+        "$optional-properties$" : ["location"],
         "extension" : [{
           "$optional$" : "!tx.fhir.org",
           "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",

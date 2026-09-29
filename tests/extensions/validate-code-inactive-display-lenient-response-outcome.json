@@ -1,0 +1,49 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "code",
+    "valueCode" : "code2"
+  },
+  {
+    "name" : "display",
+    "valueString" : "Display 2"
+  },
+  {
+    "name" : "issues",
+    "resource" : {
+      "$optional-properties$" : ["location" ],
+      "resourceType" : "OperationOutcome",
+      "issue" : [{
+        "extension" : [{
+          "$optional$" : "!tx.fhir.org",
+          "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+          "valueString" : "INACTIVE_DISPLAY_FOUND"
+        }],
+        "severity" : "warning",
+        "code" : "invalid",
+        "details" : {
+          "coding" : [{
+            "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+            "code" : "display-comment"
+          }],
+          "text" : "'2nd Code' is no longer considered a correct display for code 'code2' (status = withdrawn). The correct display is 'Display 2'"
+        },
+        "location" : ["display"],
+        "expression" : ["display"]
+      }]
+    }
+  },
+  {
+    "$optional$" : true,
+    "name" : "message",
+    "valueString" : "'2nd Code' is no longer considered a correct display for code 'code2' (status = withdrawn). The correct display is 'Display 2'"
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : true
+  },
+  {
+    "name" : "system",
+    "valueUri" : "http://hl7.org/fhir/test/CodeSystem/extensions"
+  }]
+}

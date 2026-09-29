@@ -1,0 +1,36 @@
+{
+  "resourceType": "ConceptMap",
+  "id": "othermap2",
+  "url": "http://hl7.org/fhir/test/ConceptMap/othermap2",
+  "version": "0.1.0",
+  "name": "OtherMap2ConceptMapExample",
+  "title": "Other Map 2 Concept Map Example",
+  "status": "draft",
+  "date": "2024-04-11",
+  "publisher": "HL7, Inc",
+  "sourceScopeUri": "http://hl7.org/fhir/test/ValueSet/source",
+  "targetScopeUri": "http://hl7.org/fhir/test/ValueSet/target",
+  "group": [
+    {
+      "source": "http://hl7.org/fhir/test/CodeSystem/source",
+      "target": "http://hl7.org/fhir/test/CodeSystem/target",
+      "element": [
+        {
+          "code": "code-8",
+          "target": [
+            {
+              "code": "code8",
+              "relationship": "equivalent"
+            }
+          ]
+        }
+      ],
+      "unmapped": {
+        "mode": "fixed",
+        "code": "code7",
+        "display" : "code Number 7",
+        "relationship": "related-to"
+      }
+    }
+  ]
+}

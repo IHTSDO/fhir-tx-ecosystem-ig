@@ -1,0 +1,11 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "message",
+    "valueString" : "No ConceptMap is available to translate from 'http://hl7.org/fhir/test/CodeSystem/target' to 'http://hl7.org/fhir/test/CodeSystem/source'"
+  },
+  {
+    "name" : "result",
+    "valueBoolean" : false
+  }]
+}

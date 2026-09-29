@@ -1,0 +1,23 @@
+{
+  "resourceType" : "OperationOutcome",
+  "issue" : [{
+    "$optional-properties$" : ["expression"],
+    "extension" : [{
+      "$optional$" : "!tx.fhir.org",
+      "fhir_comments" : "servers disagree on which message id a SNOMED unknown code uses - see the SCT variant discussion",
+      "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
+      "valueString" : "$choice:Unknown_Code_in_Version|Unknown_Code_in_Version_SCT$"
+    }],
+    "severity" : "error",
+    "code" : "code-invalid",
+    "details" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
+        "code" : "invalid-code"
+      }],
+      "fhir_comments" : "the wording varies by server, but the text must name the expression that was rejected",
+      "text" : "$fragments:40468003:363698007=10200004$"
+    },
+    "expression" : ["codeB"]
+  }]
+}

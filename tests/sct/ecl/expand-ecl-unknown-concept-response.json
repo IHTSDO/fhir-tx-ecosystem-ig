@@ -1,7 +1,9 @@
 {
   "resourceType" : "OperationOutcome",
   "issue" : [{
+    "$optional-properties$" : ["location"],
     "extension" : [{
+      "$optional$" : "!tx.fhir.org",
       "url" : "http://hl7.org/fhir/StructureDefinition/operationoutcome-message-id",
       "valueString" : "INVALID_ECL"
     }],
@@ -12,8 +14,9 @@
         "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
         "code" : "vs-invalid"
       }],
-      "fhir_comments" :"text varies by server — must contain the offending expression: e.g.'Invalid ECL expression: '< 99999999': (Unknown SNOMED Concept Id: 99999999)'",
-      "text" : "$fragments:< 99999999$"
-    }
+      "fhir_comments" :"text varies by server — must contain the offending expression: e.g.'Invalid ECL expression: '99999999': (Unknown SNOMED Concept Id: 99999999)'",
+      "text" : "$fragments:99999999$"
+    },
+    "expression" : ["ValueSet.compose.include[0].filter[0]"]
   }]
 }

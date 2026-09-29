@@ -1,0 +1,15 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "sourceCodeableConcept",
+    "valueCodeableConcept" : {
+      "coding" : [{
+        "system" : "http://hl7.org/fhir/test/CodeSystem/source",
+        "code" : "code-1"
+      }]
+    }
+  },{
+    "name": "targetSystem",
+    "valueUri" : "http://hl7.org/fhir/test/CodeSystem/target"
+  }]
+}

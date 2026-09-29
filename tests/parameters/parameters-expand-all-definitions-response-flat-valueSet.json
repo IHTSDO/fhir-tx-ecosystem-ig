@@ -35,6 +35,10 @@
       "valueUri" : "http://hl7.org/fhir/test/CodeSystem/simple|0.1.0"
     }
     ],
+    "property": [{
+      "code": "status",
+      "uri": "http://hl7.org/fhir/concept-properties#status"
+    }],
     "contains": [
       {
         "system": "http://hl7.org/fhir/test/CodeSystem/simple",
@@ -62,7 +66,11 @@
               "code": "olde-english"
             },
             "value": "mine own second code"
-          }]
+          }],
+        "property": [{
+          "code": "status",
+          "valueCode": "retired"
+        }]
       },{
         "system": "http://hl7.org/fhir/test/CodeSystem/simple",
         "code": "code2a",

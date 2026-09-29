@@ -21,7 +21,7 @@
             "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
             "code" : "not-in-vs"
           }],
-          "text" : "The provided code 'http://hl7.org/fhir/test/CodeSystem/simple#codeXXX ('Wrong Display')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/simple-enumerated|5.0.0'"
+          "text" : "The provided code 'http://hl7.org/fhir/test/CodeSystem/simple#codeXXX ('Wrong Display')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/simple-enumerated-codes|5.0.0'"
         },
         "expression" : ["Coding.code"]
       },
@@ -46,7 +46,7 @@
   },
   {
     "name" : "message",
-    "valueString" : "The provided code 'http://hl7.org/fhir/test/CodeSystem/simple#codeXXX ('Wrong Display')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/simple-enumerated|5.0.0'; Unknown code 'codeXXX' in the CodeSystem 'http://hl7.org/fhir/test/CodeSystem/simple' version '0.1.0'"
+    "valueString" : "The provided code 'http://hl7.org/fhir/test/CodeSystem/simple#codeXXX ('Wrong Display')' was not found in the value set 'http://hl7.org/fhir/test/ValueSet/simple-enumerated-codes|5.0.0'; Unknown code 'codeXXX' in the CodeSystem 'http://hl7.org/fhir/test/CodeSystem/simple' version '0.1.0'"
   },
   {
     "name" : "result",

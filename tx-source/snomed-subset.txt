@@ -6,6 +6,7 @@
 723595009 |All postcoordinated SNOMED CT content|
 723597001 |Mandatory concept model rule|
 723598006 |Optional concept model rule|
+723264001 |Lateralizable body structure reference set|
 # Normal concepts
 1539003 |Acquired trigger finger (disorder)|
 1204474000 |Product containing precisely barium sulfate 600 milligram/1 milliliter conventional release oral suspension (clinical drug)|

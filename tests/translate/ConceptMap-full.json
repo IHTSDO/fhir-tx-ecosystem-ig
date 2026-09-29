@@ -1,50 +1,82 @@
 {
-  "resourceType" : "ConceptMap",
-  "id" : "full",
-  "url" : "http://hl7.org/fhir/test/ConceptMap/full",
-  "version" : "0.1.0",
-  "name" : "FullConceptMapExample",
-  "title" : "Full Concept Map Example",
-  "status" : "draft",
-  "date" : "2024-04-11",
-  "publisher" : "HL7, Inc",
-  "sourceScopeUri" : "http://hl7.org/fhir/test/ValueSet/source",
-  "targetScopeUri" : "http://hl7.org/fhir/test/ValueSet/target",
-  "group" : [{
-    "source" : "http://hl7.org/fhir/test/CodeSystem/source",
-    "target" : "http://hl7.org/fhir/test/CodeSystem/target",
-    "element" : [{
-      "code" : "code-1",
-      "target" : [{
-        "code" : "code1",
-        "relationship" : "equivalent"
-      }]
-    },
+  "resourceType": "ConceptMap",
+  "id": "full",
+  "url": "http://hl7.org/fhir/test/ConceptMap/full",
+  "version": "0.1.0",
+  "name": "FullConceptMapExample",
+  "title": "Full Concept Map Example",
+  "status": "draft",
+  "date": "2024-04-11",
+  "publisher": "HL7, Inc",
+  "sourceScopeUri": "http://hl7.org/fhir/test/ValueSet/source",
+  "targetScopeUri": "http://hl7.org/fhir/test/ValueSet/target",
+  "group": [
     {
-      "code" : "code-2",
-      "target" : [{
-        "code" : "code2",
-        "relationship" : "source-is-broader-than-target"
-      }]
-    },
-    {
-      "code" : "code-3",
-      "target" : [{
-        "code" : "code3",
-        "relationship" : "source-is-narrower-than-target"
-      }]
-    },
-    {
-      "code" : "code-2b",
-      "target" : [{
-        "code" : "code2b",
-        "relationship" : "not-related-to"
-      }]
-    }],
-    "unmapped" : {
-      "mode" : "fixed",
-      "code" : "temp",
-      "relationship" : "related-to"
+      "source": "http://hl7.org/fhir/test/CodeSystem/source",
+      "target": "http://hl7.org/fhir/test/CodeSystem/target",
+      "element": [
+        {
+          "code": "code-1",
+          "target": [
+            {
+              "code": "code1",
+              "relationship": "equivalent"
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-ConceptMap.group.element.comment",
+              "valueString": "source comments"
+            }
+          ],
+          "code": "code-2",
+          "target": [
+            {
+              "code": "code2",
+              "relationship": "source-is-broader-than-target"
+            }
+          ]
+        },
+        {
+          "code": "code-3",
+          "target": [
+            {
+              "code": "code3",
+              "relationship": "source-is-narrower-than-target",
+              "comment": "target comments"
+            }
+          ]
+        },
+        {
+          "code": "code-2b",
+          "target": [
+            {
+              "code": "code2b",
+              "relationship": "not-related-to"
+            }
+          ]
+        },
+        {
+          "extension": [
+            {
+              "url": "http://hl7.org/fhir/6.0/StructureDefinition/extension-ConceptMap.group.element.comment",
+              "valueString": "This is not mapped"
+            }
+          ],
+          "code": "code-4",
+          "noMap" : true
+          
+        }
+        
+      ],
+      "unmapped": {
+        "mode": "fixed",
+        "code": "code4",
+        "display" : "code Number 4",
+        "relationship": "related-to"
+      }
     }
-  }]
+  ]
 }

@@ -7,7 +7,7 @@
     },
     {
       "name": "code",
-      "valueCode": "10200004 |Liver structure| : 272741003 |Laterality| = 24028007 |Right|"
+      "valueCode": "39607008 |Lung| : 272741003 |Laterality| = 24028007 |Right|"
     },
     {
       "name": "system-version",
@@ -33,7 +33,7 @@
                 {
                   "property": "constraint",
                   "op": "=",
-                  "value": "<<! 10200004"
+                  "value": "<<! 39607008"
                 }
               ]
             }

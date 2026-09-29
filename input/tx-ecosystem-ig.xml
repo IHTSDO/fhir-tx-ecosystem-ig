@@ -12,7 +12,7 @@
     <valueInteger value="4"/>
   </extension>
   <url value="http://hl7.org/fhir/uv/tx-ecosystem/ImplementationGuide/hl7.fhir.uv.tx-ecosystem"/>
-  <version value="1.9.3"/>
+  <version value="1.9.6"/>
   <name value="FHIRTerminologyEcosystemIG"/>
   <title value="FHIR Terminology Ecosystem IG"/>
   <status value="active"/>
@@ -59,6 +59,11 @@
       <page>
         <name value="service-requirements.html"/>
         <title value="Requirements for Server Operators"/>
+        <generation value="markdown"/>
+      </page>
+      <page>
+        <name value="approved-servers.html"/>
+        <title value="Approved Servers"/>
         <generation value="markdown"/>
       </page>
       <page>

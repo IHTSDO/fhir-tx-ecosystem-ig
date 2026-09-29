@@ -1,0 +1,13 @@
+{
+  "resourceType" : "Parameters",
+  "parameter" : [{
+    "name" : "coding",
+    "valueCoding" : {
+      "system" : "http://hl7.org/fhir/test/CodeSystem/source",
+      "code" : "code-1"
+    }
+  },{
+    "name": "targetsystem",
+    "valueUri" : "http://hl7.org/fhir/test/CodeSystem/target"
+  }]
+}

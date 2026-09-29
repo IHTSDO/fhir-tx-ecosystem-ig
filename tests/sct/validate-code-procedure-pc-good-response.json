@@ -9,24 +9,6 @@
     "valueString" : "128241005|Inflammatory disease of liver|:{363698007|Finding site|=181268008|Entire liver|}"
   },
   {
-    "name" : "issues",
-    "resource" : {
-      "resourceType" : "OperationOutcome",
-      "issue" : [{
-        "severity" : "information",
-        "code" : "informational",
-        "details" : {
-          "coding" : [{
-            "system" : "http://hl7.org/fhir/tools/CodeSystem/tx-issue-type",
-            "code" : "process-note"
-          }],
-          "text" : "The expression is grammatically correct and the concepts are valid, but the expression has not been checked against the SNOMED CT concept model (MRCM)"
-        },
-        "expression" : ["code"]
-      }]
-    }
-  },
-  {
     "name" : "result",
     "valueBoolean" : true
   },

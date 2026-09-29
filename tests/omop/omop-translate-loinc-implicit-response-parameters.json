@@ -11,18 +11,30 @@
       }
     },
     {
-      "$optional$" : "version:5",
+      "$only$" : "version:4",
       "name" : "equivalence",
       "valueCode" : "equivalent"
     },
     {
       "name" : "originMap",
+      "valueCanonical" : "https://fhir-terminology.ohdsi.org/ConceptMap/44819102"
+    },
+    {
+      "$only$" : "version:5",
+      "name" : "relationship",
+      "valueCode" : "equivalent"
+    },
+    {
+      "$only$" : "version:4",
+      "name" : "source",
       "valueCanonical" : "https://fhir-terminology.ohdsi.org/ConceptMap/44819102|"
     },
     {
-      "$optional$" : "version:4",
-      "name" : "relationship",
-      "valueCode" : "equivalent"
+      "name" : "sourceConcept",
+      "valueCoding" : {
+        "system" : "https://fhir-terminology.ohdsi.org",
+        "code" : "37073203"
+      }
     }]
   },
   {

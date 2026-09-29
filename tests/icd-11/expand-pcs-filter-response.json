@@ -1,0 +1,32 @@
+{
+  "resourceType": "ValueSet",
+  "url": "http://id.who.int/icd/release/11/mms/257068234/postcoordinationScale/infectiousAgent",
+  "version": "2026-01",
+  "name": "$token$",
+  "title": "$string$",
+  "status": "active",
+  "experimental": false,
+  "date": "2026-01",
+  "expansion": {
+    "identifier": "$uuid$",
+    "timestamp": "$instant$",
+    "total": 1,
+    "parameter": [
+      {
+        "name": "filter",
+        "valueString": "eltor"
+      },
+      {
+        "name": "used-codesystem",
+        "valueUri": "http://id.who.int/icd/release/11/mms|2026-01"
+      }
+    ],
+    "contains": [
+      {
+        "system": "http://id.who.int/icd/release/11/mms",
+        "code": "XN62R",
+        "display": "Vibrio cholerae O1, biovar eltor"
+      }
+    ]
+  }
+}

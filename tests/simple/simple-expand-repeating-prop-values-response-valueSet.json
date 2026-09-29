@@ -1,0 +1,56 @@
+{
+  "$optional-properties$" : ["id", "date", "publisher", "compose"],
+  "resourceType" : "ValueSet",
+  "id" : "$id$",
+  "url" : "http://hl7.org/fhir/test/ValueSet/simple-filter-repeating-property",
+  "version" : "5.0.0",
+  "name" : "SimpleValueSetFilterRepeatingProperty",
+  "title" : "Simple ValueSet Filter by a Repeating Property",
+  "status" : "active",
+  "experimental" : false,
+  "date" : "2023-04-01",
+  "publisher" : "FHIR Project",
+  "compose" : {
+    "include" : [{
+      "system" : "http://hl7.org/fhir/test/CodeSystem/simple",
+      "filter" : [{
+        "property" : "dup",
+        "op" : "=",
+        "value" : "beta"
+      }]
+    }]
+  },
+  "expansion" : {
+    "$optional-properties$" : ["id", "offset"],
+    "id" : "$id$",
+    "identifier" : "$uuid$",
+    "timestamp" : "$instant$",
+    "total" : 1,
+    "offset" : 0,
+    "parameter" : [{
+      "name" : "excludeNested",
+      "valueBoolean" : true
+    },
+    {
+      "name" : "used-codesystem",
+      "valueUri" : "http://hl7.org/fhir/test/CodeSystem/simple|0.1.0"
+    }],
+    "property" : [{
+      "code" : "dup",
+      "uri" : "http://hl7.org/fhir/test/CodeSystem/properties#dup"
+    }],
+    "contains" : [{
+      "system" : "http://hl7.org/fhir/test/CodeSystem/simple",
+      "code" : "code3",
+      "display" : "Display 3",
+      "property" : [{
+        "code" : "dup",
+        "valueCode" : "alpha"
+      },
+      {
+        "code" : "dup",
+        "valueCode" : "beta"
+      }]
+    }]
+  }
+}

@@ -1,6 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ciUrl="https://build.fhir.org/ig/HL7/fhir-tx-ecosystem-ig/" defaultVersion="1.9.1" defaultWorkgroup="fhir-i" gitUrl="https://github.com/HL7/davinci-deqm" url="http://hl7.org/fhir/uv/tx-ecosystem">
+<specification xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ciUrl="https://build.fhir.org/ig/HL7/fhir-tx-ecosystem-ig/" defaultVersion="1.9.5" defaultWorkgroup="fhir-i" gitUrl="https://github.com/HL7/davinci-deqm" url="http://hl7.org/fhir/uv/tx-ecosystem">
 <version code="current" url="https://build.fhir.org/ig/HL7/fhir-tx-ecosystem-ig/"/>
+<version code="1.9.5" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.5"/>
+<version code="1.9.3" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.3"/>
+<version code="1.9.3" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.3"/>
+<version code="1.9.3" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.3"/>
+<version code="1.9.2" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.2"/>
 <version code="1.9.1" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.1"/>
 <version code="1.9.0" url="http://hl7.org/fhir/uv/tx-ecosystem/1.9.0"/>
 <version code="1.8.0" url="http://hl7.org/fhir/uv/tx-ecosystem/1.8.0"/>
@@ -221,6 +226,7 @@
 <page key="NA" name="(NA)"/>
 <page key="many" name="(many)"/>
 <page deprecated="true" key="all-examples" name="All Examples"/>
+<page key="approved-servers" name="Approved Servers"/>
 <page key="artifacts" name="Artifacts Summary"/>
 <page deprecated="true" key="binary" name="Binary Support"/>
 <page deprecated="true" key="capstatements" name="Capability Statements"/>
