@@ -74,7 +74,8 @@ Each build archives `test-results/`. That includes `report.json`, `junit.xml`, `
 and `baseline-passing.txt`, which lists the tests that passed in that build.
 
 When a build of Snowstorm `develop` fails or is unstable, a Slack alert goes to the channel set
-for `snowstorm` in the Code Estate spreadsheet. The job looks that up with snomed-jenkins'
+for `snowstorm` in the Code Estate spreadsheet. The first green build after that sends a
+"passing again" message. The job looks that up with snomed-jenkins'
 `$SCRIPTS_PATH/PipelineGetConfig.sh`, so `SCRIPTS_PATH` must be set on the agent. Without it,
 the build still works, but no alert goes out and the log says "No Slack channel found".
 Builds of other branches don't send alerts.

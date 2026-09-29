@@ -75,6 +75,7 @@ pipeline {
         }
         failure { script { notifySlack('failed', 'danger') } }
         unstable { script { notifySlack('were not checked against a baseline', 'warning') } }
+        fixed { script { notifySlack('are passing again', 'good') } }
     }
 }
 
