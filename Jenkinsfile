@@ -26,6 +26,11 @@ pipeline {
         TX_TESTS_PREFIX = "txtests-${env.BUILD_TAG}"
         SNOWSTORM_SRC = "${env.WORKSPACE}/snowstorm-src"
         TESTS_ROOT = "${env.WORKSPACE}/tests-src"
+        // Parameters only become environment variables once the job has them, which is not the case on its first build.
+        TESTS_REF = "${params.TESTS_REF}"
+        VALIDATOR_VERSION = "${params.VALIDATOR_VERSION}"
+        ELASTICSEARCH_VERSION = "${params.ELASTICSEARCH_VERSION}"
+        TX_FILTER = "${params.TX_FILTER}"
     }
 
     stages {
