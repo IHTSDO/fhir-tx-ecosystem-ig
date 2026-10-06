@@ -2,7 +2,8 @@
 
 The `Jenkinsfile` at the repository root does the following:
 
-1. Builds Snowstorm and runs it against a throwaway Elasticsearch in Docker.
+1. Builds Snowstorm and runs it against a throwaway Elasticsearch in Docker. The Elasticsearch
+   version is the image tag in the `docker-compose.yml` of the Snowstorm branch being tested.
 2. Takes `tests/` and `tx-source/` from the IG release named by `TESTS_REF` (default `1.9.1`).
 3. Loads the `tx-source/snomed` subset as the SNOMED CT version those tests expect. The load
    step reads that version from the tests: for `1.9.1` it is
