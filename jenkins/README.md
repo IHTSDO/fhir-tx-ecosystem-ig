@@ -113,9 +113,24 @@ new validator or IG version can't quietly stop the regression checks. To add a b
 3. Run the job a few more times, and list in `jenkins/flaky/<TESTS_REF>.txt` any test whose
    result changes between runs.
 
-When Snowstorm fixes a test, the build log lists it under "Newly passing". To record it,
-replace that pair's baseline with the `baseline-passing.txt` archived by that build and commit
-the change.
+### Updating a baseline
+
+A Snowstorm release doesn't need a new baseline. Every Snowstorm build, `develop` or a release,
+is checked against the baseline for its `TESTS_REF` and validator. A new baseline file is only
+needed for a new `TESTS_REF` or validator version, as described above.
+
+When Snowstorm fixes a test, the build log lists it under "Newly passing". The build stays
+green and no Slack alert goes out, so check the log. Until the baseline is updated, the build
+won't fail if that test breaks again. To add it:
+
+1. Take `baseline-passing.txt` from a **green** build. A red build's file leaves out its
+   regressions, so copying it would accept them.
+2. Replace `jenkins/baselines/<TESTS_REF>/validator-<version>.txt` with it and check that
+   `git diff` only adds lines.
+3. Commit and push to `snowstorm-tx-tests`.
+
+If a Snowstorm change makes a baseline test fail on purpose, and the new behaviour is correct,
+remove that test from the baseline file. Don't change the test JSON.
 
 ## Running locally
 
