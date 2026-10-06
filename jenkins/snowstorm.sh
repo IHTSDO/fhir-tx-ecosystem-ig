@@ -11,7 +11,6 @@
 #   TX_TESTS_PREFIX        Name prefix for containers and network (default txtests-local)
 #   SNOWSTORM_SRC          Snowstorm source checkout (default snowstorm-src)
 #   TESTS_ROOT             Directory holding tests/ and tx-source/ (default: this repository)
-#   ELASTICSEARCH_VERSION  Elasticsearch image tag (default: taken from Snowstorm's docker-compose.yml)
 #   OUTPUT_DIR             Where logs are written (default test-results)
 set -euo pipefail
 
@@ -75,11 +74,7 @@ snowstorm_jar() {
 }
 
 elasticsearch_version() {
-    if [[ -n "${ELASTICSEARCH_VERSION:-}" ]]; then
-        echo "$ELASTICSEARCH_VERSION"
-    else
-        sed -n 's|.*image: *docker.elastic.co/elasticsearch/elasticsearch:\([^ ]*\).*|\1|p' "$SNOWSTORM_SRC/docker-compose.yml" | head -1
-    fi
+    sed -n 's|.*image: *docker.elastic.co/elasticsearch/elasticsearch:\([^ ]*\).*|\1|p' "$SNOWSTORM_SRC/docker-compose.yml" | head -1
 }
 
 cmd_up() {
@@ -87,7 +82,7 @@ cmd_up() {
     jar=$(snowstorm_jar)
     [[ -n "$jar" ]] || die "No Snowstorm jar in $SNOWSTORM_SRC/target - run '$0 build' first"
     es_version=$(elasticsearch_version)
-    [[ -n "$es_version" ]] || die "Could not determine the Elasticsearch version; set ELASTICSEARCH_VERSION"
+    [[ -n "$es_version" ]] || die "Could not find the Elasticsearch image tag in $SNOWSTORM_SRC/docker-compose.yml"
 
     cmd_down >/dev/null 2>&1 || true
     docker network create "$NETWORK" >/dev/null

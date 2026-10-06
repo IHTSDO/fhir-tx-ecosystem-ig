@@ -11,7 +11,6 @@ pipeline {
         string(name: 'SNOWSTORM_BRANCH', defaultValue: 'develop', description: 'Branch of IHTSDO/snowstorm to build and test')
         string(name: 'TESTS_REF', defaultValue: '1.9.1', description: 'Required. Tag, branch or commit of this repository to take tests/ and tx-source/ from. Regressions are judged against jenkins/baselines/<ref>/validator-<version>.txt; a pair without one is reported on only and marked unstable')
         string(name: 'VALIDATOR_VERSION', defaultValue: '6.9.9', description: 'hapifhir/org.hl7.fhir.core release tag for validator_cli.jar, or "latest"')
-        string(name: 'ELASTICSEARCH_VERSION', defaultValue: '', description: "Elasticsearch image tag; blank uses the one in Snowstorm's docker-compose.yml")
         string(name: 'TX_FILTER', defaultValue: '', description: 'Optional txTests -filter, e.g. snomed-expand-count-all')
     }
 
@@ -29,7 +28,6 @@ pipeline {
         // Parameters only become environment variables once the job has them, which is not the case on its first build.
         TESTS_REF = "${params.TESTS_REF}"
         VALIDATOR_VERSION = "${params.VALIDATOR_VERSION}"
-        ELASTICSEARCH_VERSION = "${params.ELASTICSEARCH_VERSION}"
         TX_FILTER = "${params.TX_FILTER}"
     }
 
