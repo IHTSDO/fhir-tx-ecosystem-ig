@@ -111,7 +111,9 @@ def main():
     print(f"{report.get('tester', 'txTests')} against {server}")
     if report_only:
         print(f"No baseline for {key} with validator {validator} ({baseline_path}); reporting only")
-    print(f"{len(passing)}/{len(results)} passed; baseline has {len(baseline)} tests")
+    flaky_passing = len(passing & flaky)
+    flaky_note = f" ({flaky_passing} of them flaky)" if flaky_passing else ""
+    print(f"{len(passing)}/{len(results)} passed{flaky_note}; baseline has {len(baseline)} tests")
 
     for title, names in (("Newly passing (add to the baseline)", newly_passing),
                          ("Flaky tests that failed this time (ignored)", flaky_failing)):
